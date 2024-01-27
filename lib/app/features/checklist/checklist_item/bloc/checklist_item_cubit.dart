@@ -23,7 +23,7 @@ class CheckListItemCubit extends Cubit<CheckListItemState> {
   }
 
   Future<void> addItem(CheckListItem checkListItem) async {
-    emit(LoadingCheckListItemState());
+    //emit(LoadingCheckListItemState());
     try {
       await checkListItemDao.insertItem(checkListItem);
       itens.add(checkListItem);
@@ -34,7 +34,7 @@ class CheckListItemCubit extends Cubit<CheckListItemState> {
   }
 
   Future<void> updateItem(CheckListItem checkListItem) async {
-    emit(LoadingCheckListItemState());
+    //emit(LoadingCheckListItemState());
 
     await checkListItemDao.updateItem(checkListItem);
     int index = itens.indexOf(checkListItem);
@@ -43,7 +43,7 @@ class CheckListItemCubit extends Cubit<CheckListItemState> {
   }
 
   Future<void> deleteItem(CheckListItem checkListItem) async {
-    emit(LoadingCheckListItemState());
+    //emit(LoadingCheckListItemState());
 
     await checkListItemDao.deleteItem(checkListItem);
     itens.remove(checkListItem);

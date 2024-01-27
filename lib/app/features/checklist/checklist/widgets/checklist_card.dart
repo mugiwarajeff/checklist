@@ -27,6 +27,7 @@ class CheckListCard extends StatelessWidget {
           child: Center(
               child: Text(
             checkList.title.value,
+            textAlign: TextAlign.center,
             style: const TextStyle(fontSize: textSize),
           )),
         ),
