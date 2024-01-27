@@ -1,5 +1,6 @@
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:checklist/app/shared/database/database_helper.dart';
+import 'package:checklist/app/shared/exceptions/create_item_exception.dart';
 import 'package:sqflite/sqflite.dart';
 
 class CheckListItemDao {
@@ -11,7 +12,7 @@ class CheckListItemDao {
 
   static const String createTableSql = 'CREATE TABLE $_tableName('
       '$_checklistId TEXT,'
-      '$_title TEXT,'
+      '$_title TEXT PRIMARY KEY,'
       '$_description TEXT,'
       '$_checked INTEGER'
       ')';
@@ -19,10 +20,14 @@ class CheckListItemDao {
   Future<int> insertItem(CheckListItem checkListItem) async {
     Database database = await DatabaseHelper.instance;
 
-    int insertedItem =
-        await database.insert(_tableName, checkListItem.toJson());
+    try {
+      int insertedItem =
+          await database.insert(_tableName, checkListItem.toJson());
 
-    return insertedItem;
+      return insertedItem;
+    } on DatabaseException {
+      throw CreateItemException(error: "Item já existe");
+    }
   }
 
   Future<List<CheckListItem>> getAll(String checklistId) async {
@@ -35,5 +40,23 @@ class CheckListItemDao {
         queryResult.map((mapItem) => CheckListItem.fromJson(mapItem)).toList();
 
     return checklistItens;
+  }
+
+  Future<int> updateItem(CheckListItem checkListItem) async {
+    Database database = await DatabaseHelper.instance;
+
+    int insertedItem = await database.update(_tableName, checkListItem.toJson(),
+        where: "$_title = '${checkListItem.title}'");
+
+    return insertedItem;
+  }
+
+  Future<int> deleteItem(CheckListItem checkListItem) async {
+    Database database = await DatabaseHelper.instance;
+
+    int deletedItem = await database.delete(_tableName,
+        where: "$_title = '${checkListItem.title}'");
+
+    return deletedItem;
   }
 }

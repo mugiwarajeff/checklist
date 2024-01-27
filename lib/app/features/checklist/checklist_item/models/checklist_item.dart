@@ -1,7 +1,7 @@
 class CheckListItem {
   final String checklistId;
-  final String title;
-  final String description;
+  String title;
+  String description;
   bool checked;
 
   CheckListItem(

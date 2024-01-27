@@ -12,6 +12,10 @@ class LoadedCheckListItemState extends CheckListItemState {
   LoadedCheckListItemState({required this.checkListItem});
 }
 
+class LoadedWithAddCheckListItemState extends LoadedCheckListItemState {
+  LoadedWithAddCheckListItemState({required super.checkListItem});
+}
+
 class ErrorCheckListItemState extends CheckListItemState {
   final String message;
 
