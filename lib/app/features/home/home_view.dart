@@ -9,7 +9,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String pageTitle = "Checklist";
+    const String pageTitle = "Listinha App";
     final ConfigurationsCubit configurationsCubit =
         BlocProvider.of<ConfigurationsCubit>(context);
 

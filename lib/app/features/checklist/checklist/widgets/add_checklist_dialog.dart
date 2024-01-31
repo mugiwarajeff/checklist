@@ -33,7 +33,7 @@ class AddChecklistDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                "Nova CheckList",
+                "Nova Listinha",
                 style: TextStyle(fontSize: 26),
               ),
               const SizedBox(
