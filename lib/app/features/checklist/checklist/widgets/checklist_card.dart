@@ -18,20 +18,23 @@ class CheckListCard extends StatelessWidget {
           builder: (context) => CheckListItemView(checkList: checkList)));
     }
 
-    return Card(
-      child: Container(
-        width: widthCard / 2.5,
-        height: heightCard / 2.5,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(width: 2, color: borderCardColor),
+    return GestureDetector(
+      onTap: navigateToCheckListPage,
+      child: Card(
+        child: Container(
+          width: widthCard / 2.5,
+          height: heightCard / 2.5,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(width: 2, color: borderCardColor),
+          ),
+          child: Center(
+              child: Text(
+            checkList.title.value,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: textSize),
+          )),
         ),
-        child: Center(
-            child: Text(
-          checkList.title.value,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: textSize),
-        )),
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:checklist/app/features/checklist/checklist/bloc/checklist_cubit.dart';
 import 'package:checklist/app/features/checklist/checklist/bloc/checklist_state.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
-import 'dart:math' as math;
 import 'package:checklist/app/features/checklist/checklist/widgets/add_checklist_dialog.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/checklist_card.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +12,34 @@ class CheckListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CheckListCubit checkListCubit = BlocProvider.of<CheckListCubit>(context);
+
     checkListCubit.loadCheckList();
     const double checkListPadding = 16;
     const double crossSpacin = 10;
+
+    Alignment _defineCircleAligmentScale(double x, double y) {
+      final double screenSizeHeight = MediaQuery.of(context).size.height;
+      final double screenSizeWidth = MediaQuery.of(context).size.width;
+
+      const double referenceHeight = 1285.33333333;
+      const double referenteWidth = 800;
+
+      double scaleY = (screenSizeHeight / referenceHeight);
+      double scaleX = (screenSizeWidth / referenteWidth);
+
+      print(x);
+      print(screenSizeWidth);
+      print(scaleX);
+      print(x / scaleX);
+
+      print(y);
+      print(screenSizeHeight);
+      print(scaleY);
+      print((y / scaleY) * 0.84);
+
+      return Alignment(x / scaleX, y / scaleY);
+    }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(checkListPadding),
@@ -43,7 +67,7 @@ class CheckListView extends StatelessWidget {
                           .toList()),
                   DragTarget(
                     builder: (context, candidateData, rejectedData) => Align(
-                      alignment: const Alignment(-2.3, 1.6),
+                      alignment: _defineCircleAligmentScale(-1.3, 1.2),
                       child: Container(
                         alignment: const Alignment(0.35, -0.6),
                         width: 200,
