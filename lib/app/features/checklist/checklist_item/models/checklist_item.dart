@@ -1,5 +1,5 @@
 class CheckListItem {
-  final String checklistId;
+  String checklistId;
   String title;
   String description;
   bool checked;

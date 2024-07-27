@@ -8,14 +8,17 @@ class CheckListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color borderCardColor = Theme.of(context).colorScheme.onBackground;
+    final Color borderCardColor = Theme.of(context).colorScheme.onSurface;
     final double widthCard = MediaQuery.of(context).size.width;
     final double heightCard = MediaQuery.of(context).size.width;
     const double textSize = 24;
 
     void navigateToCheckListPage() {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => CheckListItemView(checkList: checkList)));
+          builder: (context) => CheckListItemView(
+                checkListId: checkList.id,
+                checkListTitle: checkList.title.value,
+              )));
     }
 
     return GestureDetector(

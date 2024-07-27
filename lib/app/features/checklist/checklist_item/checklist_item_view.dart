@@ -1,121 +1,126 @@
-import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
-import 'package:checklist/app/features/checklist/checklist_item/bloc/checklist_item_cubit.dart';
-import 'package:checklist/app/features/checklist/checklist_item/bloc/checklist_item_states.dart';
+import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:checklist/app/features/checklist/checklist_item/widgets/checklist_item_card.dart';
-import 'package:checklist/app/shared/database/dao/checklist_item_dao.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
 
 class CheckListItemView extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final CheckListItemCubit checkListItemCubit;
-  final CheckList checkList;
 
-  CheckListItemView({super.key, required this.checkList})
-      : checkListItemCubit = CheckListItemCubit(
-            checkListItemDao: CheckListItemDao(), checkList: checkList);
+  final String checkListId;
+  final String checkListTitle;
+
+  CheckListItemView(
+      {super.key, required this.checkListId, required this.checkListTitle});
 
   @override
   Widget build(BuildContext context) {
     const String titleLabel = "Item";
     const String titleHint = "Digite o Item";
-    CheckListItem checkListItem = CheckListItem(
-        title: "", description: "", checked: false, checklistId: checkList.id);
-    return BlocConsumer<CheckListItemCubit, CheckListItemState>(
-      listener: (context, state) {
-        if (state is ErrorCheckListItemState) {
+
+    ChecklistItemController checkListItemStore =
+        Provider.of<ChecklistItemController>(context);
+
+    checkListItemStore.loadItens(checkListId);
+
+    CheckListItem checkListItem = CheckListItem.empty();
+
+    reaction(
+      (_) => checkListItemStore.error,
+      (String errorMessage) {
+        if (errorMessage != "") {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(state.message),
+            content: Text(checkListItemStore.error),
             backgroundColor: Theme.of(context).colorScheme.error,
             padding: const EdgeInsets.all(8),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           ));
-        }
-      },
-      bloc: checkListItemCubit,
-      builder: (context, state) {
-        if (state is InitialCheckListItemState) {
-          return Container();
-        } else if (state is LoadingCheckListItemState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is LoadedCheckListItemState) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(checkList.title.value),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView(
-                children: [
-                  ...checkListItemCubit.itens
-                      .map((checkListItem) => CheckListItemCard(
-                            checkListItem: checkListItem,
-                            checkListItemCubit: checkListItemCubit,
-                          ))
-                      .toList(),
-                  BlocBuilder(
-                    bloc: checkListItemCubit,
-                    builder: (context, state) {
-                      if (state is LoadedWithAddCheckListItemState) {
-                        return Form(
-                          key: _formKey,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          child: TextFormField(
-                            autofocus: true,
-                            validator: (value) {
-                              String? error;
-                              if (value != null && value.isEmpty) {
-                                error = "Campo Vazio";
-                              }
 
-                              return error;
-                            },
-                            onChanged: (value) => checkListItem.title = value,
-                            decoration: InputDecoration(
-                                hintText: titleHint,
-                                labelText: titleLabel,
-                                suffixIcon: ButtonBar(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    TextButton(
-                                        onPressed: () {
-                                          if (_formKey.currentState
-                                                  ?.validate() ??
-                                              false) {
-                                            checkListItemCubit
-                                                .addItem(checkListItem);
-                                          }
-                                        },
-                                        child: const Text("Adicionar")),
-                                    IconButton(
-                                        onPressed: () =>
-                                            checkListItemCubit.closeAddField(),
-                                        icon: const Icon(Icons.cancel_outlined))
-                                  ],
-                                )),
-                          ),
-                        );
-                      } else {
-                        return Container();
-                      }
-                    },
-                  )
-                ],
-              ),
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => checkListItemCubit.openAddField(),
-              child: const Icon(Icons.add),
-            ),
-          );
-        } else {
-          return Container();
+          checkListItemStore.error = "";
         }
       },
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(checkListTitle),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Observer(
+          builder: (context) {
+            if (checkListItemStore.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            return ListView(
+              children: [
+                ...checkListItemStore.checklistItems
+                    .map((checkListItem) => CheckListItemCard(
+                          checkListItem: checkListItem,
+                          checkListItemController: checkListItemStore,
+                        ))
+                    .toList(),
+                Observer(
+                  builder: (context) => Visibility(
+                    visible: checkListItemStore.addingNewItem,
+                    child: Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: TextFormField(
+                        autofocus: true,
+                        validator: (value) {
+                          String? error;
+                          if (value != null && value.isEmpty) {
+                            error = "Campo Vazio";
+                          }
+
+                          return error;
+                        },
+                        onChanged: (value) => checkListItem.title = value,
+                        decoration: InputDecoration(
+                            hintText: titleHint,
+                            labelText: titleLabel,
+                            suffixIcon: ButtonBar(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TextButton(
+                                    onPressed: () async {
+                                      if (_formKey.currentState?.validate() ??
+                                          false) {
+                                        checkListItem.checklistId = checkListId;
+
+                                        await checkListItemStore
+                                            .addItem(checkListItem);
+
+                                        checkListItem = CheckListItem.empty();
+                                      }
+                                    },
+                                    child: const Text("Adicionar")),
+                                IconButton(
+                                    onPressed: () => checkListItemStore
+                                        .setAddingNewItem(false),
+                                    icon: const Icon(Icons.cancel_outlined))
+                              ],
+                            )),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => checkListItemStore.setAddingNewItem(true),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

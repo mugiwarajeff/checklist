@@ -1,8 +1,8 @@
-import 'package:checklist/app/features/checklist/checklist/bloc/checklist_cubit.dart';
+import 'package:checklist/app/features/checklist/checklist/controllers/interfaces/checklist_store.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/features/checklist/checklist/models/value_objects/checklist_title.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 class AddChecklistDialog extends StatelessWidget {
   final CheckList checkList;
@@ -15,8 +15,8 @@ class AddChecklistDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CheckListCubit checkListCubit =
-        BlocProvider.of<CheckListCubit>(context);
+    final CheckListStore checkListController =
+        Provider.of<CheckListStore>(context);
     final double screenHeight = MediaQuery.of(context).size.height;
     final Color cancelButtonColor = Theme.of(context).colorScheme.tertiary;
     final Color cancelButtonSecondColor =
@@ -68,7 +68,7 @@ class AddChecklistDialog extends StatelessWidget {
                     ElevatedButton(
                         onPressed: () async {
                           if (_formState.currentState?.validate() ?? false) {
-                            await checkListCubit.addCheckList(checkList);
+                            await checkListController.addCheckList(checkList);
                             // ignore: use_build_context_synchronously
                             Navigator.of(context).pop();
                           }
@@ -78,9 +78,9 @@ class AddChecklistDialog extends StatelessWidget {
                       onPressed: () => Navigator.of(context).pop(),
                       style: ButtonStyle(
                           backgroundColor:
-                              MaterialStatePropertyAll(cancelButtonColor),
-                          foregroundColor: MaterialStatePropertyAll(
-                              cancelButtonSecondColor)),
+                              WidgetStatePropertyAll(cancelButtonColor),
+                          foregroundColor:
+                              WidgetStatePropertyAll(cancelButtonSecondColor)),
                       child: const Text("Cancelar"),
                     )
                   ],

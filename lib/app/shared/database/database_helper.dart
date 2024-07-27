@@ -1,7 +1,7 @@
 import 'package:checklist/app/features/configurations/models/configurations.dart';
-import 'package:checklist/app/shared/database/dao/checklist_dao.dart';
-import 'package:checklist/app/shared/database/dao/checklist_item_dao.dart';
-import 'package:checklist/app/shared/database/dao/configurations_dao.dart';
+import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao_sqflite.dart';
+import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_item_dao_sqflite.dart';
+import 'package:checklist/app/features/configurations/dao/configurations_dao_sqflite.dart';
 import 'package:sqflite/sqflite.dart';
 import "package:path/path.dart";
 
@@ -29,10 +29,11 @@ class DatabaseHelper {
       version: _databaseVersion,
       singleInstance: true,
       onCreate: (db, version) async {
-        db.execute(CheckListDao.createTableSql);
-        db.execute(CheckListItemDao.createTableSql);
-        db.execute(ConfigurationsDao.createTableSql);
-        db.insert(ConfigurationsDao.tableName, configurationsObject.toJson());
+        db.execute(CheckListDaoSqFlite.createTableSql);
+        db.execute(CheckListItemDaoSqflite.createTableSql);
+        db.execute(ConfigurationsDaoSqflite.createTableSql);
+        db.insert(
+            ConfigurationsDaoSqflite.tableName, configurationsObject.toJson());
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         await deleteDatabase(databaseFullPath);

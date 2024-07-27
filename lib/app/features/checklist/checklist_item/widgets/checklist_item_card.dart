@@ -1,19 +1,19 @@
-import 'package:checklist/app/features/checklist/checklist_item/bloc/checklist_item_cubit.dart';
+import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:flutter/material.dart';
 
 class CheckListItemCard extends StatelessWidget {
   final CheckListItem checkListItem;
-  final CheckListItemCubit checkListItemCubit;
+  final ChecklistItemController checkListItemController;
 
   const CheckListItemCard(
       {super.key,
       required this.checkListItem,
-      required this.checkListItemCubit});
+      required this.checkListItemController});
 
   @override
   Widget build(BuildContext context) {
-    final Color dividerColor = Theme.of(context).colorScheme.onBackground;
+    final Color dividerColor = Theme.of(context).colorScheme.onSurface;
     return Column(
       children: [
         Dismissible(
@@ -44,7 +44,7 @@ class CheckListItemCard extends StatelessWidget {
           },
           direction: DismissDirection.endToStart,
           onDismissed: (direction) =>
-              {checkListItemCubit.deleteItem(checkListItem)},
+              {checkListItemController.deleteItem(checkListItem)},
           background: Container(
             color: Theme.of(context).colorScheme.error,
             child: Padding(
@@ -98,14 +98,15 @@ class CheckListItemCard extends StatelessWidget {
                                 hintText: "Insira uma descrição"))),
                   ),
                 ),
-              ).whenComplete(() => checkListItemCubit.updateItem(checkListItem))
+              ).whenComplete(
+                  () => checkListItemController.updateItem(checkListItem))
             },
             child: ListTile(
               trailing: Checkbox(
                 value: checkListItem.checked,
                 onChanged: (value) {
                   checkListItem.checked = value ?? false;
-                  checkListItemCubit.updateItem(checkListItem);
+                  checkListItemController.updateItem(checkListItem);
                 },
               ),
               title: Text(
