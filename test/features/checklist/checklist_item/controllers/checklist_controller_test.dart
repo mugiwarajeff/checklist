@@ -96,8 +96,10 @@ void main() {
 
       verify(checklistItemDAO.deleteItem(checkListItemToDelete)).called(1);
 
-      expect(checklistItemController.checklistItems,
-          contains(checkListItemToDelete));
+      expect(
+          checklistItemController.checklistItems
+              .contains(checkListItemToDelete),
+          isFalse);
     });
   });
 
