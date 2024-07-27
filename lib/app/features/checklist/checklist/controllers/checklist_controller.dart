@@ -44,7 +44,7 @@ abstract class CheckListControllerBase with Store implements CheckListStore {
       List<CheckList> checklistsFromDb = await _checkListDao.getAll();
       checklists.addAll(checklistsFromDb);
     } on DatabaseException catch (e) {
-      error = e.toString();
+      setError(e.toString());
 
       //TODO fazer camada de log de erros
     }
