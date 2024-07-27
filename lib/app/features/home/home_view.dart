@@ -1,5 +1,5 @@
 import 'package:checklist/app/features/checklist/checklist/checklist_view.dart';
-import 'package:checklist/app/features/configurations/controllers/interfaces/configurations_store.dart';
+import 'package:checklist/app/features/configurations/controllers/configurations_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -12,8 +12,8 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     const String pageTitle = "Listinha App";
 
-    final ConfigurationsStore configurationsController =
-        Provider.of<ConfigurationsStore>(context);
+    final ConfigurationsController configurationsController =
+        Provider.of<ConfigurationsController>(context);
 
     return Scaffold(
       appBar: AppBar(

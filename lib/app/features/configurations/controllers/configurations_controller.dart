@@ -1,4 +1,3 @@
-import 'package:checklist/app/features/configurations/controllers/interfaces/configurations_store.dart';
 import 'package:checklist/app/features/configurations/dao/interface/configurations_dao.dart';
 import 'package:checklist/app/features/configurations/models/configurations.dart';
 import 'package:mobx/mobx.dart';
@@ -8,20 +7,15 @@ part 'configurations_controller.g.dart';
 class ConfigurationsController = ConfigurationsControllerBase
     with _$ConfigurationsController;
 
-abstract class ConfigurationsControllerBase
-    with Store
-    implements ConfigurationsStore {
+abstract class ConfigurationsControllerBase with Store {
   final ConfigurationsDAO _configurationsDAO;
 
-  @override
   @observable
   Configurations config = Configurations.empty();
 
-  @override
   @observable
   bool isLoading = false;
 
-  @override
   @observable
   String error = "";
 
@@ -38,7 +32,6 @@ abstract class ConfigurationsControllerBase
     error = newError;
   }
 
-  @override
   @action
   Future<void> loadConfigs() async {
     setIsLoading(true);
@@ -52,7 +45,6 @@ abstract class ConfigurationsControllerBase
     setIsLoading(false);
   }
 
-  @override
   @action
   Future<void> toggleDarkMode() async {
     setIsLoading(true);

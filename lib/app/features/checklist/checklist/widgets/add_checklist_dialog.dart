@@ -1,4 +1,4 @@
-import 'package:checklist/app/features/checklist/checklist/controllers/interfaces/checklist_store.dart';
+import 'package:checklist/app/features/checklist/checklist/controllers/checklist_controller.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/features/checklist/checklist/models/value_objects/checklist_title.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +15,8 @@ class AddChecklistDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CheckListStore checkListController =
-        Provider.of<CheckListStore>(context);
+    final CheckListController checkListController =
+        Provider.of<CheckListController>(context);
     final double screenHeight = MediaQuery.of(context).size.height;
     final Color cancelButtonColor = Theme.of(context).colorScheme.tertiary;
     final Color cancelButtonSecondColor =

@@ -1,12 +1,10 @@
 import 'package:checklist/app/app.dart';
 import 'package:checklist/app/features/checklist/checklist/controllers/checklist_controller.dart';
-import 'package:checklist/app/features/checklist/checklist/controllers/interfaces/checklist_store.dart';
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao.dart';
 import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
 import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_item_dao.dart';
 import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_item_dao_sqflite.dart';
 import 'package:checklist/app/features/configurations/controllers/configurations_controller.dart';
-import 'package:checklist/app/features/configurations/controllers/interfaces/configurations_store.dart';
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao_sqflite.dart';
 import 'package:checklist/app/features/configurations/dao/configurations_dao_sqflite.dart';
 import 'package:checklist/app/features/configurations/dao/interface/configurations_dao.dart';
@@ -17,7 +15,7 @@ void main() {
   runApp(MultiProvider(providers: [
     Provider<ChecklistDAO>(create: (context) => CheckListDaoSqFlite()),
     Provider<ChecklistItemDAO>(create: (context) => CheckListItemDaoSqflite()),
-    ProxyProvider<ChecklistDAO, CheckListStore>(
+    ProxyProvider<ChecklistDAO, CheckListController>(
       update: (context, checkListDAO, previous) =>
           CheckListController(checkListDao: checkListDAO),
     ),
@@ -28,7 +26,7 @@ void main() {
     Provider<ConfigurationsDAO>(
       create: (context) => ConfigurationsDaoSqflite(),
     ),
-    ProxyProvider<ConfigurationsDAO, ConfigurationsStore>(
+    ProxyProvider<ConfigurationsDAO, ConfigurationsController>(
       update: (context, configurationsDAO, previous) =>
           ConfigurationsController(configurationsDAO: configurationsDAO),
     )

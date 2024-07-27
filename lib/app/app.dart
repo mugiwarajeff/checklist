@@ -1,4 +1,4 @@
-import 'package:checklist/app/features/configurations/controllers/interfaces/configurations_store.dart';
+import 'package:checklist/app/features/configurations/controllers/configurations_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:checklist/app/features/home/home_view.dart';
 import 'package:checklist/app/shared/theme/app_theme.dart';
@@ -13,11 +13,11 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ConfigurationsStore configurationsStore =
-        Provider.of<ConfigurationsStore>(context);
+    final ConfigurationsController configurationsController =
+        Provider.of<ConfigurationsController>(context);
 
     return Observer(builder: (context) {
-      if (configurationsStore.isLoading) {
+      if (configurationsController.isLoading) {
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -26,7 +26,7 @@ class App extends StatelessWidget {
       return MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        theme: configurationsStore.config.darkMode
+        theme: configurationsController.config.darkMode
             ? appTheme.darkTheme
             : appTheme.lightTheme,
         routes: {

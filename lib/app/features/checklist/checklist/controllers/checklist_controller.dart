@@ -1,4 +1,3 @@
-import 'package:checklist/app/features/checklist/checklist/controllers/interfaces/checklist_store.dart';
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:mobx/mobx.dart';
@@ -7,17 +6,14 @@ part 'checklist_controller.g.dart';
 
 class CheckListController = CheckListControllerBase with _$CheckListController;
 
-abstract class CheckListControllerBase with Store implements CheckListStore {
+abstract class CheckListControllerBase with Store {
   final ChecklistDAO _checkListDao;
 
-  @override
   ObservableList<CheckList> checklists = ObservableList<CheckList>();
 
-  @override
   @observable
   bool isLoading = false;
 
-  @override
   @observable
   String error = "";
 
@@ -34,7 +30,6 @@ abstract class CheckListControllerBase with Store implements CheckListStore {
     error = newError;
   }
 
-  @override
   @action
   Future<void> loadCheckLists() async {
     setIsLoading(true);
@@ -52,7 +47,6 @@ abstract class CheckListControllerBase with Store implements CheckListStore {
     setIsLoading(false);
   }
 
-  @override
   @action
   Future<void> addCheckList(CheckList checklist) async {
     setIsLoading(true);

@@ -1,4 +1,4 @@
-import 'package:checklist/app/features/checklist/checklist/controllers/interfaces/checklist_store.dart';
+import 'package:checklist/app/features/checklist/checklist/controllers/checklist_controller.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/add_checklist_dialog.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/checklist_card.dart';
@@ -12,7 +12,8 @@ class CheckListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CheckListStore checkListController = Provider.of<CheckListStore>(context);
+    CheckListController checkListController =
+        Provider.of<CheckListController>(context);
 
     checkListController.loadCheckLists();
     const double checkListPadding = 16;
