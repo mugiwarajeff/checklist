@@ -1,9 +1,10 @@
 import 'package:checklist/app/features/configurations/controllers/interfaces/configurations_store.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:checklist/app/features/home/home_view.dart';
 import 'package:checklist/app/shared/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
 import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
@@ -23,6 +24,8 @@ class App extends StatelessWidget {
       }
 
       return MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: configurationsStore.config.darkMode
             ? appTheme.darkTheme
             : appTheme.lightTheme,
