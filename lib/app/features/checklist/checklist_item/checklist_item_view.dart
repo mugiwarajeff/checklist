@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CheckListItemView extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -17,8 +18,10 @@ class CheckListItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String titleLabel = "Item";
-    const String titleHint = "Digite o Item";
+    final String emptyField = AppLocalizations.of(context)!.emptyField;
+    final String titleLabel = AppLocalizations.of(context)!.item;
+    final String addText = AppLocalizations.of(context)!.add;
+    final String titleHint = AppLocalizations.of(context)!.typeItem;
 
     ChecklistItemController checkListItemStore =
         Provider.of<ChecklistItemController>(context);
@@ -77,7 +80,7 @@ class CheckListItemView extends StatelessWidget {
                         validator: (value) {
                           String? error;
                           if (value != null && value.isEmpty) {
-                            error = "Campo Vazio";
+                            error = emptyField;
                           }
 
                           return error;
@@ -101,7 +104,7 @@ class CheckListItemView extends StatelessWidget {
                                         checkListItem = CheckListItem.empty();
                                       }
                                     },
-                                    child: const Text("Adicionar")),
+                                    child: Text(addText)),
                                 IconButton(
                                     onPressed: () => checkListItemStore
                                         .setAddingNewItem(false),

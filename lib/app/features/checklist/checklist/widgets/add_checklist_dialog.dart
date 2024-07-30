@@ -2,6 +2,7 @@ import 'package:checklist/app/features/checklist/checklist/controllers/checklist
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/features/checklist/checklist/models/value_objects/checklist_title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class AddChecklistDialog extends StatelessWidget {
@@ -21,8 +22,10 @@ class AddChecklistDialog extends StatelessWidget {
     final Color cancelButtonColor = Theme.of(context).colorScheme.tertiary;
     final Color cancelButtonSecondColor =
         Theme.of(context).colorScheme.onTertiary;
-    const String titleLabel = "Titulo";
-    const String titleHelper = "Digite o Titulo da Lista";
+    final String titleLabel = AppLocalizations.of(context)!.newList;
+    final String titleHelper = AppLocalizations.of(context)!.typeTitleList;
+    final String createText = AppLocalizations.of(context)!.create;
+    final String cancelText = AppLocalizations.of(context)!.cancel;
     const double contentPadding = 16;
     return Dialog(
       child: Padding(
@@ -32,9 +35,9 @@ class AddChecklistDialog extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "Nova Listinha",
-                style: TextStyle(fontSize: 26),
+              Text(
+                titleLabel,
+                style: const TextStyle(fontSize: 26),
               ),
               const SizedBox(
                 height: 5,
@@ -45,10 +48,10 @@ class AddChecklistDialog extends StatelessWidget {
                   child: Column(
                     children: [
                       TextFormField(
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.title),
-                          border: OutlineInputBorder(),
-                          label: Text(titleLabel),
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.title),
+                          border: const OutlineInputBorder(),
+                          label: Text(titleHelper),
                           hintText: titleHelper,
                         ),
                         validator: (value) => checkList.title.validate(value),
@@ -73,7 +76,7 @@ class AddChecklistDialog extends StatelessWidget {
                             Navigator.of(context).pop();
                           }
                         },
-                        child: const Text("Criar")),
+                        child: Text(createText)),
                     ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(),
                       style: ButtonStyle(
@@ -81,7 +84,7 @@ class AddChecklistDialog extends StatelessWidget {
                               WidgetStatePropertyAll(cancelButtonColor),
                           foregroundColor:
                               WidgetStatePropertyAll(cancelButtonSecondColor)),
-                      child: const Text("Cancelar"),
+                      child: Text(cancelText),
                     )
                   ],
                 ),

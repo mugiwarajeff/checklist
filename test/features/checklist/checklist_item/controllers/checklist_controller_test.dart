@@ -3,11 +3,12 @@ import 'dart:io';
 import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
 import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_item_dao.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
+import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-@GenerateNiceMocks([MockSpec<ChecklistItemDAO>()])
+@GenerateNiceMocks([MockSpec<ChecklistItemDAO>(), MockSpec<MessageLogger>()])
 import 'checklist_controller_test.mocks.dart';
 
 void main() {
@@ -19,11 +20,12 @@ void main() {
   ];
   late ChecklistItemDAO checklistItemDAO;
   late ChecklistItemController checklistItemController;
-
+  late MessageLogger messageLogger;
   setUp(() {
     checklistItemDAO = MockChecklistItemDAO();
-    checklistItemController =
-        ChecklistItemController(checkListItem: checklistItemDAO);
+    messageLogger = MockMessageLogger();
+    checklistItemController = ChecklistItemController(
+        checkListItem: checklistItemDAO, messageLogger: messageLogger);
   });
 
   group("Test loadItens", () {

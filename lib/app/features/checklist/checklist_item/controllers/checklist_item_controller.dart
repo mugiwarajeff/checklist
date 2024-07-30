@@ -1,6 +1,8 @@
 import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_item_dao.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:checklist/app/shared/exceptions/create_item_exception.dart';
+import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
+import 'package:checklist/app/shared/logs/models/log_message.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sqflite/sqflite.dart';
 part 'checklist_item_controller.g.dart';
@@ -10,6 +12,7 @@ class ChecklistItemController = ChecklistItemControllerBase
 
 abstract class ChecklistItemControllerBase with Store {
   final ChecklistItemDAO _checklistItemDAO;
+  final MessageLogger _messageLogger;
 
   ObservableList<CheckListItem> checklistItems =
       ObservableList<CheckListItem>();
@@ -23,8 +26,11 @@ abstract class ChecklistItemControllerBase with Store {
   @observable
   bool addingNewItem = false;
 
-  ChecklistItemControllerBase({required ChecklistItemDAO checkListItem})
-      : _checklistItemDAO = checkListItem;
+  ChecklistItemControllerBase(
+      {required ChecklistItemDAO checkListItem,
+      required MessageLogger messageLogger})
+      : _checklistItemDAO = checkListItem,
+        _messageLogger = messageLogger;
 
   @action
   void setAddingNewItem(bool newState) {
@@ -53,7 +59,11 @@ abstract class ChecklistItemControllerBase with Store {
       checklistItems.addAll(itemsFromDb);
     } on DatabaseException catch (e) {
       setError(e.toString());
-      //TODO fazer camaada de log
+      await _messageLogger.writeMessage(LogMessage(
+          category: "Error",
+          eventTime: DateTime.now(),
+          message: e.toString(),
+          user: "system"));
     }
 
     setIsLoading(false);
@@ -70,7 +80,11 @@ abstract class ChecklistItemControllerBase with Store {
       setAddingNewItem(false);
     } on CreateItemException catch (e) {
       setError(e.toString());
-      //TODO fazer camaada de log
+      await _messageLogger.writeMessage(LogMessage(
+          category: "Error",
+          eventTime: DateTime.now(),
+          message: e.toString(),
+          user: "system"));
     }
 
     setIsLoading(false);
@@ -84,7 +98,11 @@ abstract class ChecklistItemControllerBase with Store {
       await _checklistItemDAO.updateItem(checkListItem);
     } on CreateItemException catch (e) {
       setError(e.toString());
-      //TODO fazer camaada de log
+      await _messageLogger.writeMessage(LogMessage(
+          category: "Error",
+          eventTime: DateTime.now(),
+          message: e.toString(),
+          user: "system"));
     }
 
     setIsLoading(false);
@@ -102,7 +120,11 @@ abstract class ChecklistItemControllerBase with Store {
       }
     } on CreateItemException catch (e) {
       setError(e.toString());
-      //TODO fazer camaada de log
+      await _messageLogger.writeMessage(LogMessage(
+          category: "Error",
+          eventTime: DateTime.now(),
+          message: e.toString(),
+          user: "system"));
     }
 
     setIsLoading(false);

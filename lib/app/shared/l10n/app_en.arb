@@ -1,4 +1,19 @@
 {   
     "@@locale": "en",
-    "helloWorld": "Hello World"
+    "helloWorld": "Hello World",
+    "appTitle": "Checklist",
+    "newList": "New List",
+    "title": "Title",
+    "create": "Create",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "item": "Item",
+    "typeItem": "Type item name",
+    "add": "Add",
+    "remove": "Remove",
+    "typeTitleList": "Type the title of list",
+    "areYouSureWantToDelete": "Are you sure you want to delete?",
+    "description": "Description",
+    "insertDescription": "Insert Description",
+    "emptyField": "Empty Field"
 }

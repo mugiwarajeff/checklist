@@ -19,7 +19,7 @@ class CheckListView extends StatelessWidget {
     const double checkListPadding = 16;
     const double crossSpacin = 10;
 
-    Alignment _defineCircleAligmentScale(double x, double y) {
+    Alignment defineCircleAligmentScale(double x, double y) {
       final double screenSizeHeight = MediaQuery.of(context).size.height;
       final double screenSizeWidth = MediaQuery.of(context).size.width;
 
@@ -28,16 +28,6 @@ class CheckListView extends StatelessWidget {
 
       double scaleY = (screenSizeHeight / referenceHeight);
       double scaleX = (screenSizeWidth / referenteWidth);
-
-      print(x);
-      print(screenSizeWidth);
-      print(scaleX);
-      print(x / scaleX);
-
-      print(y);
-      print(screenSizeHeight);
-      print(scaleY);
-      print((y / scaleY) * 0.84);
 
       return Alignment(x / scaleX, y / scaleY);
     }
@@ -72,7 +62,7 @@ class CheckListView extends StatelessWidget {
                         .toList()),
                 DragTarget(
                   builder: (context, candidateData, rejectedData) => Align(
-                    alignment: _defineCircleAligmentScale(-1.3, 1.2),
+                    alignment: defineCircleAligmentScale(-1.3, 1.2),
                     child: Container(
                       alignment: const Alignment(0.35, -0.6),
                       width: 200,

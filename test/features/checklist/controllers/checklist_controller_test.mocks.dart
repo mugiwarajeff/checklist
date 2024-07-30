@@ -9,6 +9,9 @@ import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao.dar
     as _i2;
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart'
     as _i4;
+import 'package:checklist/app/shared/logs/interfaces/message_logger.dart'
+    as _i5;
+import 'package:checklist/app/shared/logs/models/log_message.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -58,4 +61,47 @@ class MockChecklistDAO extends _i1.Mock implements _i2.ChecklistDAO {
         returnValue: _i3.Future<int>.value(0),
         returnValueForMissingStub: _i3.Future<int>.value(0),
       ) as _i3.Future<int>);
+}
+
+/// A class which mocks [MessageLogger].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockMessageLogger extends _i1.Mock implements _i5.MessageLogger {
+  @override
+  _i3.Future<bool> writeMessage(_i6.LogMessage? logMessage) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #writeMessage,
+          [logMessage],
+        ),
+        returnValue: _i3.Future<bool>.value(false),
+        returnValueForMissingStub: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
+
+  @override
+  _i3.Future<List<String>> readAllLogs() => (super.noSuchMethod(
+        Invocation.method(
+          #readAllLogs,
+          [],
+        ),
+        returnValue: _i3.Future<List<String>>.value(<String>[]),
+        returnValueForMissingStub: _i3.Future<List<String>>.value(<String>[]),
+      ) as _i3.Future<List<String>>);
+
+  @override
+  _i3.Future<List<String>> readLogsBasedOnDateTime(
+    DateTime? startDate,
+    DateTime? endDate,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #readLogsBasedOnDateTime,
+          [
+            startDate,
+            endDate,
+          ],
+        ),
+        returnValue: _i3.Future<List<String>>.value(<String>[]),
+        returnValueForMissingStub: _i3.Future<List<String>>.value(<String>[]),
+      ) as _i3.Future<List<String>>);
 }

@@ -1,4 +1,19 @@
 {   
     "@@locale": "pt",
-    "helloWorld": "Ola Mundo"
+    "helloWorld": "Ola Mundo",
+    "appTitle": "Listinha",
+    "newList": "Nova Lista",
+    "title": "Titulo",
+    "create": "Criar",
+    "confirm": "Confirm",
+    "cancel": "Cancelar",
+    "item": "Item",
+    "typeItem": "Digite o item",
+    "add": "Adicionar",
+    "remove": "Remover",
+    "typeTitleList": "Digite o titulo da lista",
+    "areYouSureWantToDelete": "Certeza que deseja escluir?",
+      "description": "Descrição",
+    "insertDescription": "Insira uma descrição",
+    "emptyField": "Campo Vazio"
 }

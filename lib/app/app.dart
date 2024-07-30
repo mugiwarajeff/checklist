@@ -26,6 +26,7 @@ class App extends StatelessWidget {
       return MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
+        //locale: const Locale('pt', "BR"),
         theme: configurationsController.config.darkMode
             ? appTheme.darkTheme
             : appTheme.lightTheme,

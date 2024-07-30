@@ -8,6 +8,8 @@ import 'package:checklist/app/features/configurations/controllers/configurations
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao_sqflite.dart';
 import 'package:checklist/app/features/configurations/dao/configurations_dao_sqflite.dart';
 import 'package:checklist/app/features/configurations/dao/interface/configurations_dao.dart';
+import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
+import 'package:checklist/app/shared/logs/message_logger_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,13 +17,18 @@ void main() {
   runApp(MultiProvider(providers: [
     Provider<ChecklistDAO>(create: (context) => CheckListDaoSqFlite()),
     Provider<ChecklistItemDAO>(create: (context) => CheckListItemDaoSqflite()),
-    ProxyProvider<ChecklistDAO, CheckListController>(
-      update: (context, checkListDAO, previous) =>
-          CheckListController(checkListDao: checkListDAO),
+    Provider<MessageLogger>(
+      create: (context) => MessageLoggerImpl(),
     ),
-    ProxyProvider<ChecklistItemDAO, ChecklistItemController>(
-      update: (context, checkListItemDAO, previous) =>
-          ChecklistItemController(checkListItem: checkListItemDAO),
+    ProxyProvider2<ChecklistDAO, MessageLogger, CheckListController>(
+      update: (context, checkListDAO, messageLogger, previous) =>
+          CheckListController(
+              checkListDao: checkListDAO, messagelogger: messageLogger),
+    ),
+    ProxyProvider2<ChecklistItemDAO, MessageLogger, ChecklistItemController>(
+      update: (context, checkListItemDAO, messageLogger, previous) =>
+          ChecklistItemController(
+              checkListItem: checkListItemDAO, messageLogger: messageLogger),
     ),
     Provider<ConfigurationsDAO>(
       create: (context) => ConfigurationsDaoSqflite(),

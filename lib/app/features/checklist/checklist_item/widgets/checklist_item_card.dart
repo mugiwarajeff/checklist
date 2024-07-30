@@ -1,6 +1,7 @@
 import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CheckListItemCard extends StatelessWidget {
   final CheckListItem checkListItem;
@@ -14,6 +15,17 @@ class CheckListItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color dividerColor = Theme.of(context).colorScheme.onSurface;
+
+    final String dialogText =
+        AppLocalizations.of(context)!.areYouSureWantToDelete;
+    final String confirmText = AppLocalizations.of(context)!.confirm;
+    final String cancelText = AppLocalizations.of(context)!.cancel;
+    final String removeText = AppLocalizations.of(context)!.remove;
+
+    final String descriptionText = AppLocalizations.of(context)!.description;
+    final String insertDescription =
+        AppLocalizations.of(context)!.insertDescription;
+
     return Column(
       children: [
         Dismissible(
@@ -27,18 +39,18 @@ class CheckListItemCard extends StatelessWidget {
                         size: 42,
                       ),
                       alignment: Alignment.center,
-                      content: const Text(
-                        "Deseja excluir Item?",
+                      content: Text(
+                        dialogText,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 24),
+                        style: const TextStyle(fontSize: 24),
                       ),
                       actions: [
                         TextButton(
                             onPressed: () => Navigator.of(context).pop(false),
-                            child: Text("Cancelar")),
+                            child: Text(cancelText)),
                         TextButton(
                             onPressed: () => Navigator.of(context).pop(true),
-                            child: Text("Confirmar"))
+                            child: Text(confirmText))
                       ],
                     ));
           },
@@ -59,11 +71,11 @@ class CheckListItemCard extends StatelessWidget {
                       Icons.delete,
                       size: 28,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(
-                      "Remover?",
+                      "$removeText?",
                       style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).colorScheme.onError),
@@ -94,8 +106,8 @@ class CheckListItemCard extends StatelessWidget {
                             onChanged: (value) =>
                                 checkListItem.description = value,
                             decoration: InputDecoration(
-                                label: Text("Descrição"),
-                                hintText: "Insira uma descrição"))),
+                                label: Text(descriptionText),
+                                hintText: insertDescription))),
                   ),
                 ),
               ).whenComplete(

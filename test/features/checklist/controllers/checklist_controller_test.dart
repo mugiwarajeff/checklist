@@ -2,16 +2,18 @@ import 'package:checklist/app/features/checklist/checklist/controllers/checklist
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/features/checklist/checklist/models/value_objects/checklist_title.dart';
+import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
 
-@GenerateNiceMocks([MockSpec<ChecklistDAO>()])
+@GenerateNiceMocks([MockSpec<ChecklistDAO>(), MockSpec<MessageLogger>()])
 import "checklist_controller_test.mocks.dart";
 
 void main() {
   late ChecklistDAO checklistDAO;
+  late MessageLogger messageLogger;
   late CheckListController checkListController;
 
   List<CheckList> checklistsTest = [
@@ -25,7 +27,9 @@ void main() {
 
   setUp(() {
     checklistDAO = MockChecklistDAO();
-    checkListController = CheckListController(checkListDao: checklistDAO);
+    messageLogger = MockMessageLogger();
+    checkListController = CheckListController(
+        checkListDao: checklistDAO, messagelogger: messageLogger);
   });
 
   group("Test loading operations", () {
