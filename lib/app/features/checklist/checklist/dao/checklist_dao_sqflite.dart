@@ -42,4 +42,14 @@ class CheckListDaoSqFlite implements ChecklistDAO {
 
     return insertedValues;
   }
+
+  @override
+  Future<int> deleteCheckList(CheckList checklist) async {
+    Database database = await DatabaseHelper.instance;
+
+    int count = await database.delete(_tableName,
+        where: "$_checklistId = ?", whereArgs: [checklist.id]);
+
+    return count;
+  }
 }

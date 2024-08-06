@@ -61,6 +61,17 @@ class MockChecklistDAO extends _i1.Mock implements _i2.ChecklistDAO {
         returnValue: _i3.Future<int>.value(0),
         returnValueForMissingStub: _i3.Future<int>.value(0),
       ) as _i3.Future<int>);
+
+  @override
+  _i3.Future<int> deleteCheckList(_i4.CheckList? checklist) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteCheckList,
+          [checklist],
+        ),
+        returnValue: _i3.Future<int>.value(0),
+        returnValueForMissingStub: _i3.Future<int>.value(0),
+      ) as _i3.Future<int>);
 }
 
 /// A class which mocks [MessageLogger].

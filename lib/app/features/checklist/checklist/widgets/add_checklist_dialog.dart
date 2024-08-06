@@ -9,10 +9,8 @@ class AddChecklistDialog extends StatelessWidget {
   final CheckList checkList;
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
   AddChecklistDialog({super.key, required String checkListid})
-      : checkList = CheckList(
-            id: checkListid,
-            checkListItens: [],
-            title: CheckListTitle(value: ""));
+      : checkList =
+            CheckList(id: checkListid, title: CheckListTitle(value: ""));
 
   @override
   Widget build(BuildContext context) {

@@ -17,12 +17,8 @@ void main() {
   late CheckListController checkListController;
 
   List<CheckList> checklistsTest = [
-    CheckList(
-        id: "1", checkListItens: [], title: CheckListTitle(value: "compras")),
-    CheckList(
-        id: "2",
-        checkListItens: [],
-        title: CheckListTitle(value: "compras 2024"))
+    CheckList(id: "1", title: CheckListTitle(value: "compras")),
+    CheckList(id: "2", title: CheckListTitle(value: "compras 2024"))
   ];
 
   setUp(() {
@@ -54,10 +50,8 @@ void main() {
 
   group("Test adding checklist methods", () {
     test("Should add a new checklist item", () async {
-      CheckList newChecklist = CheckList(
-          id: "3",
-          checkListItens: [],
-          title: CheckListTitle(value: "Compras 2025"));
+      CheckList newChecklist =
+          CheckList(id: "3", title: CheckListTitle(value: "Compras 2025"));
       when(checklistDAO.insert(newChecklist)).thenAnswer((_) async => 1);
 
       await checkListController.addCheckList(newChecklist);
@@ -66,14 +60,25 @@ void main() {
     });
 
     test("should return DatabaseException on failing to insert", () async {
-      CheckList newChecklist = CheckList(
-          id: "3",
-          checkListItens: [],
-          title: CheckListTitle(value: "Compras 2025"));
+      CheckList newChecklist =
+          CheckList(id: "3", title: CheckListTitle(value: "Compras 2025"));
       when(checklistDAO.insert(newChecklist)).thenThrow(DatabaseException);
 
       expect(checkListController.addCheckList(newChecklist),
           throwsA(DatabaseException));
+    });
+  });
+
+  group("Test remove checklist methods", () {
+    test("Should remove a checklist", () async {
+      CheckList checkList =
+          CheckList(id: "1", title: CheckListTitle(value: "compras"));
+
+      when(checklistDAO.deleteCheckList(checkList)).thenAnswer((_) async => 1);
+
+      await checkListController.deleteCheckList(checkList);
+
+      expect(!checkListController.checklists.contains(checkList), isTrue);
     });
   });
 

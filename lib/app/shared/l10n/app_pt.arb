@@ -15,5 +15,6 @@
     "areYouSureWantToDelete": "Certeza que deseja escluir?",
       "description": "Descrição",
     "insertDescription": "Insira uma descrição",
-    "emptyField": "Campo Vazio"
+    "emptyField": "Campo Vazio",
+    "wantToDeleteChecklist": "Deseja Excluir a Listinha?"
 }

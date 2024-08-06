@@ -15,5 +15,6 @@
     "areYouSureWantToDelete": "Are you sure you want to delete?",
     "description": "Description",
     "insertDescription": "Insert Description",
-    "emptyField": "Empty Field"
+    "emptyField": "Empty Field",
+    "wantToDeleteChecklist": "Want to remove Checlist?"
 }

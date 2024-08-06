@@ -2,35 +2,37 @@ import 'package:checklist/app/features/checklist/checklist/controllers/checklist
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/add_checklist_dialog.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/checklist_card.dart';
+import 'package:checklist/app/features/checklist/checklist/widgets/painters/exclure_area_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-class CheckListView extends StatelessWidget {
+class CheckListView extends StatefulWidget {
   const CheckListView({super.key});
 
   @override
+  State<CheckListView> createState() => _CheckListViewState();
+}
+
+class _CheckListViewState extends State<CheckListView> {
+  bool isDragging = false;
+
+  @override
   Widget build(BuildContext context) {
+    final String confirmButton = AppLocalizations.of(context)!.confirm;
+    final String cancelButton = AppLocalizations.of(context)!.cancel;
+    final String confirmationText =
+        AppLocalizations.of(context)!.wantToDeleteChecklist;
     CheckListController checkListController =
         Provider.of<CheckListController>(context);
 
     checkListController.loadCheckLists();
-    const double checkListPadding = 16;
+    const double checkListPadding = 0;
     const double crossSpacin = 10;
 
-    Alignment defineCircleAligmentScale(double x, double y) {
-      final double screenSizeHeight = MediaQuery.of(context).size.height;
-      final double screenSizeWidth = MediaQuery.of(context).size.width;
-
-      const double referenceHeight = 1285.33333333;
-      const double referenteWidth = 800;
-
-      double scaleY = (screenSizeHeight / referenceHeight);
-      double scaleX = (screenSizeWidth / referenteWidth);
-
-      return Alignment(x / scaleX, y / scaleY);
-    }
+    Color redColor = Theme.of(context).colorScheme.error;
+    Color onRedColor = Theme.of(context).colorScheme.onError;
 
     return Scaffold(
       body: Padding(
@@ -49,35 +51,96 @@ class CheckListView extends StatelessWidget {
 
             return Stack(
               children: [
-                GridView.count(
-                    crossAxisSpacing: crossSpacin,
-                    crossAxisCount: 2,
-                    children: checkListController.checklists
-                        .map((checklist) => Draggable<CheckList>(
-                              childWhenDragging: Container(),
-                              data: checklist,
-                              feedback: CheckListCard(checkList: checklist),
-                              child: CheckListCard(checkList: checklist),
-                            ))
-                        .toList()),
-                DragTarget(
-                  builder: (context, candidateData, rejectedData) => Align(
-                    alignment: defineCircleAligmentScale(-1.3, 1.2),
-                    child: Container(
-                      alignment: const Alignment(0.35, -0.6),
-                      width: 200,
-                      height: 200,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.error,
-                          shape: BoxShape.circle),
-                      child: Icon(
-                        Icons.delete,
-                        color: Theme.of(context).colorScheme.onError,
-                        size: 36,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Observer(
+                    builder: (context) => GridView.count(
+                        crossAxisSpacing: crossSpacin,
+                        crossAxisCount: 2,
+                        children: checkListController.checklists
+                            .map((checklist) => Draggable<CheckList>(
+                                  childWhenDragging: Container(),
+                                  onDragStarted: () => setState(() {
+                                    isDragging = true;
+                                  }),
+                                  onDraggableCanceled: (_, __) => setState(() {
+                                    isDragging = false;
+                                  }),
+                                  onDragCompleted: () => setState(() {
+                                    isDragging = false;
+                                  }),
+                                  data: checklist,
+                                  feedback: CheckListCard(checkList: checklist),
+                                  child: CheckListCard(checkList: checklist),
+                                ))
+                            .toList()),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: DragTarget<CheckList>(
+                      builder: (context, candidateData, rejectedData) =>
+                          LayoutBuilder(
+                        builder: (context, constraints) => Visibility(
+                          visible: isDragging,
+                          child: CustomPaint(
+                            painter: ExclureAreaPainter(
+                              color: redColor,
+                              centerOfCircle: Offset(0, constraints.maxHeight),
+                            ),
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: Icon(
+                                  Icons.delete,
+                                  color: onRedColor,
+                                  size: 56,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
+                      onAcceptWithDetails: (details) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Text(
+                                confirmationText,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontSize: 24),
+                              ),
+                              title: Icon(
+                                Icons.warning_amber_rounded,
+                                size: 64,
+                                color: Theme.of(context).colorScheme.tertiary,
+                              ),
+                              actions: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      checkListController
+                                          .deleteCheckList(details.data);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(confirmButton)),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(cancelButton)),
+                              ],
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
-                  onMove: (details) => print(details.data),
                 ),
               ],
             );
@@ -99,3 +162,14 @@ class CheckListView extends StatelessWidget {
     );
   }
 }
+
+
+/**
+ * onWillAcceptWithDetails: (details) {
+                        bool accept = false;
+
+                        
+
+                        return accept;
+                      }
+ */

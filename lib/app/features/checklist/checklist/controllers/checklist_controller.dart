@@ -79,4 +79,28 @@ abstract class CheckListControllerBase with Store {
 
     setIsLoading(false);
   }
+
+  @action
+  Future<void> deleteCheckList(CheckList checklistToDelete) async {
+    setIsLoading(true);
+
+    try {
+      int result = await _checkListDao.deleteCheckList(checklistToDelete);
+
+      if (result > 0) {
+        checklists
+            .removeWhere((checklist) => checklist.id == checklistToDelete.id);
+      }
+    } on DatabaseException catch (e) {
+      error = e.toString();
+
+      await _messageLogger.writeMessage(LogMessage(
+          category: "Error",
+          eventTime: DateTime.now(),
+          message: e.toString(),
+          user: "system"));
+    }
+
+    setIsLoading(false);
+  }
 }
