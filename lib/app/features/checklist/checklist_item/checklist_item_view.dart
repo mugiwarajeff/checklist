@@ -1,6 +1,7 @@
 import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:checklist/app/features/checklist/checklist_item/widgets/checklist_item_card.dart';
+import 'package:checklist/app/features/checklist/checklist_item/widgets/filter_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
@@ -19,6 +20,7 @@ class CheckListItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String emptyField = AppLocalizations.of(context)!.emptyField;
+
     final String titleLabel = AppLocalizations.of(context)!.item;
     final String addText = AppLocalizations.of(context)!.add;
     final String titleHint = AppLocalizations.of(context)!.typeItem;
@@ -29,6 +31,10 @@ class CheckListItemView extends StatelessWidget {
     checkListItemStore.loadItens(checkListId);
 
     CheckListItem checkListItem = CheckListItem.empty();
+
+    reaction((_) => checkListItemStore.checklistOrder, (checkListItem) {
+      checkListItemStore.loadItens(checkListId);
+    });
 
     reaction(
       (_) => checkListItemStore.error,
@@ -50,6 +56,17 @@ class CheckListItemView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(checkListTitle),
+        actions: [
+          IconButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => FilterDialog(
+                          checklistItemController: checkListItemStore,
+                        ));
+              },
+              icon: const Icon(Icons.filter_alt_rounded))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

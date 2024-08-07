@@ -1,0 +1,1 @@
+enum ChecklistOrder { creation, priority }

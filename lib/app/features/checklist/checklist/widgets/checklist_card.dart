@@ -8,7 +8,9 @@ class CheckListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color borderCardColor = Theme.of(context).colorScheme.onSurface;
+    final Color primaryColor = Theme.of(context).colorScheme.primary;
+    final Color tertiaryColor = Theme.of(context).colorScheme.tertiary;
+    final Color onPrimaryColor = Theme.of(context).colorScheme.onPrimary;
     final double widthCard = MediaQuery.of(context).size.width;
     final double heightCard = MediaQuery.of(context).size.width;
     const double textSize = 24;
@@ -28,14 +30,21 @@ class CheckListCard extends StatelessWidget {
           width: widthCard / 2.5,
           height: heightCard / 2.5,
           decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [primaryColor, tertiaryColor],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight),
             borderRadius: BorderRadius.circular(15),
-            border: Border.all(width: 2, color: borderCardColor),
+            border: Border.all(width: 3, color: onPrimaryColor),
           ),
           child: Center(
-              child: Text(
-            checkList.title.value,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: textSize),
+              child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              checkList.title.value,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: textSize, color: onPrimaryColor),
+            ),
           )),
         ),
       ),

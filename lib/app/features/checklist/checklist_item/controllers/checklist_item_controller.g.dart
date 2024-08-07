@@ -25,6 +25,22 @@ mixin _$ChecklistItemController on ChecklistItemControllerBase, Store {
     });
   }
 
+  late final _$checklistOrderAtom = Atom(
+      name: 'ChecklistItemControllerBase.checklistOrder', context: context);
+
+  @override
+  ChecklistOrder get checklistOrder {
+    _$checklistOrderAtom.reportRead();
+    return super.checklistOrder;
+  }
+
+  @override
+  set checklistOrder(ChecklistOrder value) {
+    _$checklistOrderAtom.reportWrite(value, super.checklistOrder, () {
+      super.checklistOrder = value;
+    });
+  }
+
   late final _$errorAtom =
       Atom(name: 'ChecklistItemControllerBase.error', context: context);
 
@@ -104,6 +120,17 @@ mixin _$ChecklistItemController on ChecklistItemControllerBase, Store {
   }
 
   @override
+  void setChecklistOrder(ChecklistOrder newOrder) {
+    final _$actionInfo = _$ChecklistItemControllerBaseActionController
+        .startAction(name: 'ChecklistItemControllerBase.setChecklistOrder');
+    try {
+      return super.setChecklistOrder(newOrder);
+    } finally {
+      _$ChecklistItemControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setIsLoading(bool newState) {
     final _$actionInfo = _$ChecklistItemControllerBaseActionController
         .startAction(name: 'ChecklistItemControllerBase.setIsLoading');
@@ -129,6 +156,7 @@ mixin _$ChecklistItemController on ChecklistItemControllerBase, Store {
   String toString() {
     return '''
 isLoading: ${isLoading},
+checklistOrder: ${checklistOrder},
 error: ${error},
 addingNewItem: ${addingNewItem}
     ''';

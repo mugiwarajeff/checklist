@@ -1,5 +1,7 @@
 import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
+import 'package:checklist/app/features/checklist/checklist_item/widgets/checklist_item_modal.dart';
+import 'package:checklist/app/shared/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -18,13 +20,33 @@ class CheckListItemCard extends StatelessWidget {
 
     final String dialogText =
         AppLocalizations.of(context)!.areYouSureWantToDelete;
+    final String overdueText = AppLocalizations.of(context)!.overdue;
+    final String closeText = AppLocalizations.of(context)!.close;
+    final String plannedText = AppLocalizations.of(context)!.planned;
     final String confirmText = AppLocalizations.of(context)!.confirm;
     final String cancelText = AppLocalizations.of(context)!.cancel;
     final String removeText = AppLocalizations.of(context)!.remove;
 
-    final String descriptionText = AppLocalizations.of(context)!.description;
-    final String insertDescription =
-        AppLocalizations.of(context)!.insertDescription;
+    (Color, String)? checkVisualForDuedate() {
+      DateTime dateTime = DateTime.now();
+
+      if (checkListItem.dueDate == null) {
+        return null;
+      }
+
+      if (Utils.isToday(dateTime, checkListItem.dueDate!)) {
+        return (const Color.fromARGB(150, 255, 235, 59), closeText);
+      }
+
+      if (checkListItem.dueDate!.isBefore(dateTime)) {
+        return (const Color.fromARGB(150, 244, 67, 54), overdueText);
+      }
+
+      if (checkListItem.dueDate!.isAfter(dateTime)) {
+        return (const Color.fromARGB(150, 76, 175, 79), plannedText);
+      }
+      return null;
+    }
 
     return Column(
       children: [
@@ -93,27 +115,22 @@ class CheckListItemCard extends StatelessWidget {
                 showDragHandle: true,
                 isScrollControlled: true,
                 context: context,
-                builder: (context) => Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom,
-                      right: 16,
-                      left: 16),
-                  child: SizedBox(
-                    child: Form(
-                        child: TextFormField(
-                            initialValue: checkListItem.description,
-                            maxLines: 5,
-                            onChanged: (value) =>
-                                checkListItem.description = value,
-                            decoration: InputDecoration(
-                                label: Text(descriptionText),
-                                hintText: insertDescription))),
-                  ),
-                ),
+                builder: (context) =>
+                    ChecklistItemModal(checkListItem: checkListItem),
               ).whenComplete(
                   () => checkListItemController.updateItem(checkListItem))
             },
             child: ListTile(
+              leading: Visibility(
+                visible: checkListItem.dueDate != null,
+                child: Container(
+                  height: 15,
+                  width: 15,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: checkVisualForDuedate()?.$1),
+                ),
+              ),
               trailing: Checkbox(
                 value: checkListItem.checked,
                 onChanged: (value) {

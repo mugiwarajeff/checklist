@@ -7,10 +7,12 @@ class CheckListDaoSqFlite implements ChecklistDAO {
   static const String _tableName = "checklist";
   static const String _checklistId = "id";
   static const String _checklistTitle = "title";
+  static const String _category = "category";
 
   static const String createTableSql = 'CREATE TABLE $_tableName('
       '$_checklistId TEXT PRIMARY KEY,'
-      '$_checklistTitle TEXT'
+      '$_checklistTitle TEXT,'
+      '$_category TEXT'
       ')';
 
   @override

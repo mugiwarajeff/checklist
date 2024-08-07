@@ -16,5 +16,20 @@
       "description": "Descrição",
     "insertDescription": "Insira uma descrição",
     "emptyField": "Campo Vazio",
-    "wantToDeleteChecklist": "Deseja Excluir a Listinha?"
+    "wantToDeleteChecklist": "Deseja Excluir a Listinha?",
+    "dueDate": "Prazo",
+    "dueDateDescription": "Selecione uma data",
+    "overdue": "Atrasado",
+    "close": "Proximo",
+    "planned": "Planejado",
+    "filters": "Filtros",
+    "creation": "Criação",
+    "priority": "Prioridade",
+    "category": "Category",
+    "categoryHint": "Selecione Categoria",
+    "shopping": "Compras",
+    "house": "Casa",
+    "work": "Trabalho",
+    "study": "Estudos",
+    "others": "Outros"
 }

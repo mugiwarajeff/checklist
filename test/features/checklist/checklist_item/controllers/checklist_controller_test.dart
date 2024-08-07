@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
 import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_item_dao.dart';
+import 'package:checklist/app/features/checklist/checklist_item/enum/checklist_order.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,9 +15,19 @@ import 'checklist_controller_test.mocks.dart';
 void main() {
   List<CheckListItem> itemsForTesting = [
     CheckListItem(
-        checked: false, checklistId: "1", description: "teste", title: "Cafe"),
+        checked: false,
+        checklistId: "1",
+        description: "teste",
+        title: "Cafe",
+        dueDate: null,
+        createDate: DateTime.now()),
     CheckListItem(
-        checked: false, checklistId: "1", description: "teste2", title: "arroz")
+        checked: false,
+        checklistId: "1",
+        description: "teste2",
+        title: "arroz",
+        dueDate: null,
+        createDate: DateTime.now())
   ];
   late ChecklistItemDAO checklistItemDAO;
   late ChecklistItemController checklistItemController;
@@ -32,7 +43,7 @@ void main() {
     test("Should load all itens of a checklist", () async {
       String checkListId = "1";
 
-      when(checklistItemDAO.getAll(checkListId))
+      when(checklistItemDAO.getAll(checkListId, ChecklistOrder.creation))
           .thenAnswer((_) async => itemsForTesting);
 
       await checklistItemController.loadItens(checkListId);
@@ -46,7 +57,8 @@ void main() {
     test("Should generate a error when loading itens", () async {
       String checkListId = "1";
 
-      when(checklistItemDAO.getAll(checkListId)).thenThrow(HttpException);
+      when(checklistItemDAO.getAll(checkListId, ChecklistOrder.creation))
+          .thenThrow(HttpException);
 
       expect(checklistItemController.loadItens(checkListId),
           throwsA(HttpException));
@@ -72,7 +84,9 @@ void main() {
           checked: false,
           checklistId: "3",
           description: "Teste2",
-          title: "Olá");
+          title: "Olá",
+          dueDate: null,
+          createDate: DateTime.now());
 
       when(checklistItemDAO.updateItem(checkListItem))
           .thenAnswer((_) async => 1);
@@ -89,7 +103,9 @@ void main() {
           checked: false,
           checklistId: "1",
           description: "teste2",
-          title: "arroz");
+          title: "arroz",
+          dueDate: null,
+          createDate: DateTime.now());
 
       when(checklistItemDAO.deleteItem(checkListItemToDelete))
           .thenAnswer((_) async => 1);

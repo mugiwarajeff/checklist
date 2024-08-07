@@ -1,4 +1,5 @@
 import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_item_dao.dart';
+import 'package:checklist/app/features/checklist/checklist_item/enum/checklist_order.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:checklist/app/shared/exceptions/create_item_exception.dart';
 import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
@@ -21,6 +22,9 @@ abstract class ChecklistItemControllerBase with Store {
   bool isLoading = false;
 
   @observable
+  ChecklistOrder checklistOrder = ChecklistOrder.creation;
+
+  @observable
   String error = "";
 
   @observable
@@ -35,6 +39,11 @@ abstract class ChecklistItemControllerBase with Store {
   @action
   void setAddingNewItem(bool newState) {
     addingNewItem = newState;
+  }
+
+  @action
+  void setChecklistOrder(ChecklistOrder newOrder) {
+    checklistOrder = newOrder;
   }
 
   @action
@@ -54,7 +63,7 @@ abstract class ChecklistItemControllerBase with Store {
     try {
       checklistItems.clear();
       List<CheckListItem> itemsFromDb =
-          await _checklistItemDAO.getAll(checkListId);
+          await _checklistItemDAO.getAll(checkListId, checklistOrder);
 
       checklistItems.addAll(itemsFromDb);
     } on DatabaseException catch (e) {

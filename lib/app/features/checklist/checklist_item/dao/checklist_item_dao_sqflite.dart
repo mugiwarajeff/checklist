@@ -1,4 +1,5 @@
 import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_item_dao.dart';
+import 'package:checklist/app/features/checklist/checklist_item/enum/checklist_order.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:checklist/app/shared/database/database_helper.dart';
 import 'package:checklist/app/shared/exceptions/create_item_exception.dart';
@@ -10,12 +11,16 @@ class CheckListItemDaoSqflite implements ChecklistItemDAO {
   static const String _description = "description";
   static const String _title = "title";
   static const String _checked = "checked";
+  static const String _dueDate = "due_date";
+  static const String _createDate = "create_date";
 
   static const String createTableSql = 'CREATE TABLE $_tableName('
       '$_checklistId TEXT,'
       '$_title TEXT PRIMARY KEY,'
       '$_description TEXT,'
-      '$_checked INTEGER'
+      '$_checked INTEGER,'
+      '$_dueDate INTEGER,'
+      '$_createDate INTEGER'
       ')';
 
   @override
@@ -33,11 +38,16 @@ class CheckListItemDaoSqflite implements ChecklistItemDAO {
   }
 
   @override
-  Future<List<CheckListItem>> getAll(String checklistId) async {
+  Future<List<CheckListItem>> getAll(
+      String checklistId, ChecklistOrder checklistOrder) async {
     Database database = await DatabaseHelper.instance;
 
+    String orderByClause = checklistOrder == ChecklistOrder.priority
+        ? "CASE WHEN $_dueDate IS NULL THEN 1 ELSE 0 END, $_dueDate ASC"
+        : "$_createDate ASC";
+
     List<Map<String, Object?>> queryResult = await database.query(_tableName,
-        where: "$_checklistId = '$checklistId'");
+        where: "$_checklistId = '$checklistId'", orderBy: orderByClause);
 
     List<CheckListItem> checklistItens =
         queryResult.map((mapItem) => CheckListItem.fromJson(mapItem)).toList();

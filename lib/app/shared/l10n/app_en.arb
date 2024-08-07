@@ -16,5 +16,20 @@
     "description": "Description",
     "insertDescription": "Insert Description",
     "emptyField": "Empty Field",
-    "wantToDeleteChecklist": "Want to remove Checlist?"
+    "wantToDeleteChecklist": "Want to remove Checlist?",
+    "dueDate": "Due Date",
+    "dueDateDescription": "Select one Date",
+    "overdue": "Overdue",
+    "close": "Close",
+    "planned": "Planned",
+    "filters": "Filters",
+    "creation": "Creation",
+    "priority": "Priority",
+    "category": "Category",
+    "categoryHint": "Select Category",
+    "shopping": "Shopping",
+    "house": "House",
+    "work": "Work",
+    "study": "Study",
+    "others": "Others"
 }
