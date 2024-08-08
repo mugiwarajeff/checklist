@@ -8,13 +8,23 @@ import 'package:checklist/app/features/configurations/controllers/configurations
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao_sqflite.dart';
 import 'package:checklist/app/features/configurations/dao/configurations_dao_sqflite.dart';
 import 'package:checklist/app/features/configurations/dao/interface/configurations_dao.dart';
+import 'package:checklist/app/shared/cache_store/cache_store_fac.dart';
+import 'package:checklist/app/shared/cache_store/interface/cache_store.dart';
 import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
 import 'package:checklist/app/shared/logs/message_logger_impl.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auto_cache/flutter_auto_cache.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await AutoCacheInitializer.initialize();
+
   runApp(MultiProvider(providers: [
+    Provider<CacheStore>(
+      create: (context) => CacheStoreFac(),
+    ),
     Provider<ChecklistDAO>(create: (context) => CheckListDaoSqFlite()),
     Provider<ChecklistItemDAO>(create: (context) => CheckListItemDaoSqflite()),
     Provider<MessageLogger>(
@@ -25,10 +35,14 @@ void main() {
           CheckListController(
               checkListDao: checkListDAO, messagelogger: messageLogger),
     ),
-    ProxyProvider2<ChecklistItemDAO, MessageLogger, ChecklistItemController>(
-      update: (context, checkListItemDAO, messageLogger, previous) =>
-          ChecklistItemController(
-              checkListItem: checkListItemDAO, messageLogger: messageLogger),
+    ProxyProvider3<ChecklistItemDAO, MessageLogger, CacheStore,
+        ChecklistItemController>(
+      update:
+          (context, checkListItemDAO, messageLogger, cacheStore, previous) =>
+              ChecklistItemController(
+                  checkListItem: checkListItemDAO,
+                  messageLogger: messageLogger,
+                  cacheStore: cacheStore),
     ),
     Provider<ConfigurationsDAO>(
       create: (context) => ConfigurationsDaoSqflite(),

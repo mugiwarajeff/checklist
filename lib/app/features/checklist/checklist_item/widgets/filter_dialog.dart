@@ -5,8 +5,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class FilterDialog extends StatelessWidget {
+  final String checklistItemId;
   final ChecklistItemController checklistItemController;
-  const FilterDialog({super.key, required this.checklistItemController});
+  const FilterDialog(
+      {super.key,
+      required this.checklistItemController,
+      required this.checklistItemId});
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +46,7 @@ class FilterDialog extends StatelessWidget {
                       onChanged: (value) {
                         if (value != null) {
                           checklistItemController.setChecklistOrder(value);
+                          checklistItemController.loadItens(checklistItemId);
                         }
                       }))
                   .toList()

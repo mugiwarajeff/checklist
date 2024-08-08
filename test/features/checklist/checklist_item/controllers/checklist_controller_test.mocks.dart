@@ -11,6 +11,8 @@ import 'package:checklist/app/features/checklist/checklist_item/enum/checklist_o
     as _i5;
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart'
     as _i4;
+import 'package:checklist/app/shared/cache_store/interface/cache_store.dart'
+    as _i8;
 import 'package:checklist/app/shared/logs/interfaces/message_logger.dart'
     as _i6;
 import 'package:checklist/app/shared/logs/models/log_message.dart' as _i7;
@@ -127,4 +129,31 @@ class MockMessageLogger extends _i1.Mock implements _i6.MessageLogger {
         returnValue: _i3.Future<List<String>>.value(<String>[]),
         returnValueForMissingStub: _i3.Future<List<String>>.value(<String>[]),
       ) as _i3.Future<List<String>>);
+}
+
+/// A class which mocks [CacheStore].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCacheStore extends _i1.Mock implements _i8.CacheStore {
+  @override
+  _i3.Future<_i5.ChecklistOrder?> getLastChecklistOrder() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLastChecklistOrder,
+          [],
+        ),
+        returnValue: _i3.Future<_i5.ChecklistOrder?>.value(),
+        returnValueForMissingStub: _i3.Future<_i5.ChecklistOrder?>.value(),
+      ) as _i3.Future<_i5.ChecklistOrder?>);
+
+  @override
+  _i3.Future<void> saveLastChecklistOrder(_i5.ChecklistOrder? checklistOrder) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #saveLastChecklistOrder,
+          [checklistOrder],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }

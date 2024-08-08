@@ -1,6 +1,7 @@
 import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_item_dao.dart';
 import 'package:checklist/app/features/checklist/checklist_item/enum/checklist_order.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
+import 'package:checklist/app/shared/cache_store/interface/cache_store.dart';
 import 'package:checklist/app/shared/exceptions/create_item_exception.dart';
 import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
 import 'package:checklist/app/shared/logs/models/log_message.dart';
@@ -14,6 +15,7 @@ class ChecklistItemController = ChecklistItemControllerBase
 abstract class ChecklistItemControllerBase with Store {
   final ChecklistItemDAO _checklistItemDAO;
   final MessageLogger _messageLogger;
+  final CacheStore _cacheStore;
 
   ObservableList<CheckListItem> checklistItems =
       ObservableList<CheckListItem>();
@@ -32,9 +34,23 @@ abstract class ChecklistItemControllerBase with Store {
 
   ChecklistItemControllerBase(
       {required ChecklistItemDAO checkListItem,
-      required MessageLogger messageLogger})
+      required MessageLogger messageLogger,
+      required CacheStore cacheStore})
       : _checklistItemDAO = checkListItem,
-        _messageLogger = messageLogger;
+        _messageLogger = messageLogger,
+        _cacheStore = cacheStore {
+    _loadChecklistOrder();
+  }
+
+  Future<void> _loadChecklistOrder() async {
+    ChecklistOrder? checklistOrder = await _cacheStore.getLastChecklistOrder();
+
+    if (checklistOrder == null) {
+      return;
+    }
+
+    this.checklistOrder = checklistOrder;
+  }
 
   @action
   void setAddingNewItem(bool newState) {
@@ -44,6 +60,7 @@ abstract class ChecklistItemControllerBase with Store {
   @action
   void setChecklistOrder(ChecklistOrder newOrder) {
     checklistOrder = newOrder;
+    _cacheStore.saveLastChecklistOrder(checklistOrder);
   }
 
   @action

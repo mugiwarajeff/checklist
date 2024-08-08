@@ -4,12 +4,17 @@ import 'package:checklist/app/features/checklist/checklist_item/controllers/chec
 import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_item_dao.dart';
 import 'package:checklist/app/features/checklist/checklist_item/enum/checklist_order.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
+import 'package:checklist/app/shared/cache_store/interface/cache_store.dart';
 import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-@GenerateNiceMocks([MockSpec<ChecklistItemDAO>(), MockSpec<MessageLogger>()])
+@GenerateNiceMocks([
+  MockSpec<ChecklistItemDAO>(),
+  MockSpec<MessageLogger>(),
+  MockSpec<CacheStore>()
+])
 import 'checklist_controller_test.mocks.dart';
 
 void main() {
@@ -32,11 +37,15 @@ void main() {
   late ChecklistItemDAO checklistItemDAO;
   late ChecklistItemController checklistItemController;
   late MessageLogger messageLogger;
+  late CacheStore cacheStore;
   setUp(() {
     checklistItemDAO = MockChecklistItemDAO();
     messageLogger = MockMessageLogger();
+    cacheStore = MockCacheStore();
     checklistItemController = ChecklistItemController(
-        checkListItem: checklistItemDAO, messageLogger: messageLogger);
+        checkListItem: checklistItemDAO,
+        messageLogger: messageLogger,
+        cacheStore: cacheStore);
   });
 
   group("Test loadItens", () {

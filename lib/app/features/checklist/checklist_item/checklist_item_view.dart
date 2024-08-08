@@ -8,14 +8,19 @@ import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CheckListItemView extends StatelessWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+class CheckListItemView extends StatefulWidget {
   final String checkListId;
   final String checkListTitle;
 
-  CheckListItemView(
+  const CheckListItemView(
       {super.key, required this.checkListId, required this.checkListTitle});
+
+  @override
+  State<CheckListItemView> createState() => _CheckListItemViewState();
+}
+
+class _CheckListItemViewState extends State<CheckListItemView> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +33,11 @@ class CheckListItemView extends StatelessWidget {
     ChecklistItemController checkListItemStore =
         Provider.of<ChecklistItemController>(context);
 
-    checkListItemStore.loadItens(checkListId);
+    checkListItemStore.loadItens(widget.checkListId);
 
     CheckListItem checkListItem = CheckListItem.empty();
 
-    reaction((_) => checkListItemStore.checklistOrder, (checkListItem) {
-      checkListItemStore.loadItens(checkListId);
-    });
+    //reaction((_) => checkListItemStore.checklistOrder, (checkListItem) {checkListItemStore.loadItens(widget.checkListId); });
 
     reaction(
       (_) => checkListItemStore.error,
@@ -55,13 +58,14 @@ class CheckListItemView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(checkListTitle),
+        title: Text(widget.checkListTitle),
         actions: [
           IconButton(
               onPressed: () {
                 showDialog(
                     context: context,
                     builder: (context) => FilterDialog(
+                          checklistItemId: widget.checkListId,
                           checklistItemController: checkListItemStore,
                         ));
               },
@@ -113,7 +117,8 @@ class CheckListItemView extends StatelessWidget {
                                     onPressed: () async {
                                       if (_formKey.currentState?.validate() ??
                                           false) {
-                                        checkListItem.checklistId = checkListId;
+                                        checkListItem.checklistId =
+                                            widget.checkListId;
 
                                         await checkListItemStore
                                             .addItem(checkListItem);
