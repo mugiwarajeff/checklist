@@ -1,5 +1,6 @@
 import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
+import 'package:checklist/app/features/checklist/checklist_item/models/value_objects/checklist_title.dart';
 import 'package:checklist/app/features/checklist/checklist_item/widgets/checklist_item_card.dart';
 import 'package:checklist/app/features/checklist/checklist_item/widgets/filter_dialog.dart';
 import 'package:flutter/material.dart';
@@ -37,21 +38,34 @@ class _CheckListItemViewState extends State<CheckListItemView> {
 
     CheckListItem checkListItem = CheckListItem.empty();
 
-    //reaction((_) => checkListItemStore.checklistOrder, (checkListItem) {checkListItemStore.loadItens(widget.checkListId); });
-
     reaction(
-      (_) => checkListItemStore.error,
-      (String errorMessage) {
-        if (errorMessage != "") {
+      (_) => checkListItemStore.errorCode,
+      (int erroCode) {
+        String errorMessage = "";
+        if (erroCode != 0) {
+          switch (erroCode) {
+            case 1555:
+              errorMessage =
+                  AppLocalizations.of(context)!.wasNotPossibleToUpdate;
+              break;
+            case 2067:
+              errorMessage =
+                  AppLocalizations.of(context)!.wasNotPossibleToUpdate;
+              break;
+            default:
+              errorMessage = "error not identified";
+              break;
+          }
+
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(checkListItemStore.error),
+            content: Text(errorMessage),
             backgroundColor: Theme.of(context).colorScheme.error,
             padding: const EdgeInsets.all(8),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           ));
 
-          checkListItemStore.error = "";
+          checkListItemStore.errorCode = 0;
         }
       },
     );
@@ -106,7 +120,8 @@ class _CheckListItemViewState extends State<CheckListItemView> {
 
                           return error;
                         },
-                        onChanged: (value) => checkListItem.title = value,
+                        onChanged: (value) => checkListItem.title =
+                            ChecklistItemTitle(value: value),
                         decoration: InputDecoration(
                             hintText: titleHint,
                             labelText: titleLabel,

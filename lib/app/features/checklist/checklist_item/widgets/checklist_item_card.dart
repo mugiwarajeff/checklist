@@ -51,7 +51,7 @@ class CheckListItemCard extends StatelessWidget {
     return Column(
       children: [
         Dismissible(
-          key: Key(checkListItem.title),
+          key: Key(checkListItem.title.value),
           confirmDismiss: (direction) async {
             return await showDialog(
                 context: context,
@@ -115,10 +115,11 @@ class CheckListItemCard extends StatelessWidget {
                 showDragHandle: true,
                 isScrollControlled: true,
                 context: context,
-                builder: (context) =>
-                    ChecklistItemModal(checkListItem: checkListItem),
-              ).whenComplete(
-                  () => checkListItemController.updateItem(checkListItem))
+                builder: (context) => ChecklistItemModal(
+                  checkListItem: checkListItem,
+                  checklistItemController: checkListItemController,
+                ),
+              )
             },
             child: ListTile(
               leading: Visibility(
@@ -139,7 +140,7 @@ class CheckListItemCard extends StatelessWidget {
                 },
               ),
               title: Text(
-                checkListItem.title,
+                checkListItem.title.value,
                 style: TextStyle(
                     decoration: checkListItem.checked
                         ? TextDecoration.lineThrough

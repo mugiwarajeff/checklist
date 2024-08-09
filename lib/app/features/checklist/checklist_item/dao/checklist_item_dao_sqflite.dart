@@ -2,11 +2,11 @@ import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_it
 import 'package:checklist/app/features/checklist/checklist_item/enum/checklist_order.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:checklist/app/shared/database/database_helper.dart';
-import 'package:checklist/app/shared/exceptions/create_item_exception.dart';
 import 'package:sqflite/sqflite.dart';
 
 class CheckListItemDaoSqflite implements ChecklistItemDAO {
   static const String _tableName = "checklist_item";
+  static const String _checklistItemId = "checklist_item_id";
   static const String _checklistId = "checklist_id";
   static const String _description = "description";
   static const String _title = "title";
@@ -16,7 +16,8 @@ class CheckListItemDaoSqflite implements ChecklistItemDAO {
 
   static const String createTableSql = 'CREATE TABLE $_tableName('
       '$_checklistId TEXT,'
-      '$_title TEXT PRIMARY KEY,'
+      '$_checklistItemId INTEGER PRIMARY KEY,'
+      '$_title TEXT UNIQUE,'
       '$_description TEXT,'
       '$_checked INTEGER,'
       '$_dueDate INTEGER,'
@@ -27,14 +28,10 @@ class CheckListItemDaoSqflite implements ChecklistItemDAO {
   Future<int> insertItem(CheckListItem checkListItem) async {
     Database database = await DatabaseHelper.instance;
 
-    try {
-      int insertedItem =
-          await database.insert(_tableName, checkListItem.toJson());
+    int insertedItem =
+        await database.insert(_tableName, checkListItem.toJson());
 
-      return insertedItem;
-    } on DatabaseException {
-      throw CreateItemException(error: "Item já existe");
-    }
+    return insertedItem;
   }
 
   @override
@@ -60,7 +57,7 @@ class CheckListItemDaoSqflite implements ChecklistItemDAO {
     Database database = await DatabaseHelper.instance;
 
     int insertedItem = await database.update(_tableName, checkListItem.toJson(),
-        where: "$_title = '${checkListItem.title}'");
+        where: "$_checklistItemId = '${checkListItem.checklistItemId}'");
 
     return insertedItem;
   }
@@ -70,7 +67,7 @@ class CheckListItemDaoSqflite implements ChecklistItemDAO {
     Database database = await DatabaseHelper.instance;
 
     int deletedItem = await database.delete(_tableName,
-        where: "$_title = '${checkListItem.title}'");
+        where: "$_checklistItemId = '${checkListItem.checklistItemId}'");
 
     return deletedItem;
   }

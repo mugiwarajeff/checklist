@@ -2,7 +2,7 @@ import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_it
 import 'package:checklist/app/features/checklist/checklist_item/enum/checklist_order.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:checklist/app/shared/cache_store/interface/cache_store.dart';
-import 'package:checklist/app/shared/exceptions/create_item_exception.dart';
+
 import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
 import 'package:checklist/app/shared/logs/models/log_message.dart';
 import 'package:mobx/mobx.dart';
@@ -27,7 +27,7 @@ abstract class ChecklistItemControllerBase with Store {
   ChecklistOrder checklistOrder = ChecklistOrder.creation;
 
   @observable
-  String error = "";
+  int errorCode = 0;
 
   @observable
   bool addingNewItem = false;
@@ -69,8 +69,8 @@ abstract class ChecklistItemControllerBase with Store {
   }
 
   @action
-  void setError(String newError) {
-    error = newError;
+  void setError(int newError) {
+    errorCode = newError;
   }
 
   @action
@@ -84,7 +84,7 @@ abstract class ChecklistItemControllerBase with Store {
 
       checklistItems.addAll(itemsFromDb);
     } on DatabaseException catch (e) {
-      setError(e.toString());
+      setError(e.getResultCode() ?? 0);
       await _messageLogger.writeMessage(LogMessage(
           category: "Error",
           eventTime: DateTime.now(),
@@ -104,8 +104,8 @@ abstract class ChecklistItemControllerBase with Store {
       checklistItems.add(checkListItem);
 
       setAddingNewItem(false);
-    } on CreateItemException catch (e) {
-      setError(e.toString());
+    } on DatabaseException catch (e) {
+      setError(e.getResultCode() ?? 0);
       await _messageLogger.writeMessage(LogMessage(
           category: "Error",
           eventTime: DateTime.now(),
@@ -122,8 +122,11 @@ abstract class ChecklistItemControllerBase with Store {
 
     try {
       await _checklistItemDAO.updateItem(checkListItem);
-    } on CreateItemException catch (e) {
-      setError(e.toString());
+    } on DatabaseException catch (e) {
+      int? errorCode = e.getResultCode();
+      print(errorCode);
+
+      setError(errorCode ?? 0);
       await _messageLogger.writeMessage(LogMessage(
           category: "Error",
           eventTime: DateTime.now(),
@@ -144,8 +147,8 @@ abstract class ChecklistItemControllerBase with Store {
       if (result == 1) {
         checklistItems.remove(checkListItem);
       }
-    } on CreateItemException catch (e) {
-      setError(e.toString());
+    } on DatabaseException catch (e) {
+      setError(e.getResultCode() ?? 0);
       await _messageLogger.writeMessage(LogMessage(
           category: "Error",
           eventTime: DateTime.now(),

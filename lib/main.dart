@@ -14,6 +14,7 @@ import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
 import 'package:checklist/app/shared/logs/message_logger_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auto_cache/flutter_auto_cache.dart';
+
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -40,9 +41,10 @@ void main() async {
       update:
           (context, checkListItemDAO, messageLogger, cacheStore, previous) =>
               ChecklistItemController(
-                  checkListItem: checkListItemDAO,
-                  messageLogger: messageLogger,
-                  cacheStore: cacheStore),
+        checkListItem: checkListItemDAO,
+        messageLogger: messageLogger,
+        cacheStore: cacheStore,
+      ),
     ),
     Provider<ConfigurationsDAO>(
       create: (context) => ConfigurationsDaoSqflite(),

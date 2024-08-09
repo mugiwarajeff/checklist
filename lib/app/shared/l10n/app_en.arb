@@ -31,5 +31,7 @@
     "house": "House",
     "work": "Work",
     "study": "Study",
-    "others": "Others"
+    "others": "Others",
+    "titleItem": "Title of Item",
+    "wasNotPossibleToUpdate": "Was not possible to update because already exists an item with this title"
 }

@@ -41,19 +41,19 @@ mixin _$ChecklistItemController on ChecklistItemControllerBase, Store {
     });
   }
 
-  late final _$errorAtom =
-      Atom(name: 'ChecklistItemControllerBase.error', context: context);
+  late final _$errorCodeAtom =
+      Atom(name: 'ChecklistItemControllerBase.errorCode', context: context);
 
   @override
-  String get error {
-    _$errorAtom.reportRead();
-    return super.error;
+  int get errorCode {
+    _$errorCodeAtom.reportRead();
+    return super.errorCode;
   }
 
   @override
-  set error(String value) {
-    _$errorAtom.reportWrite(value, super.error, () {
-      super.error = value;
+  set errorCode(int value) {
+    _$errorCodeAtom.reportWrite(value, super.errorCode, () {
+      super.errorCode = value;
     });
   }
 
@@ -142,7 +142,7 @@ mixin _$ChecklistItemController on ChecklistItemControllerBase, Store {
   }
 
   @override
-  void setError(String newError) {
+  void setError(int newError) {
     final _$actionInfo = _$ChecklistItemControllerBaseActionController
         .startAction(name: 'ChecklistItemControllerBase.setError');
     try {
@@ -157,7 +157,7 @@ mixin _$ChecklistItemController on ChecklistItemControllerBase, Store {
     return '''
 isLoading: ${isLoading},
 checklistOrder: ${checklistOrder},
-error: ${error},
+errorCode: ${errorCode},
 addingNewItem: ${addingNewItem}
     ''';
   }

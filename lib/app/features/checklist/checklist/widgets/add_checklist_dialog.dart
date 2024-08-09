@@ -81,7 +81,8 @@ class AddChecklistDialog extends StatelessWidget {
                           label: Text(titleHelper),
                           hintText: titleHelper,
                         ),
-                        validator: (value) => checkList.title.validate(value),
+                        validator: (value) => checkList.title
+                            .validate(value, AppLocalizations.of(context)),
                         onChanged: (value) =>
                             checkList.title = CheckListTitle(value: value),
                       ),
