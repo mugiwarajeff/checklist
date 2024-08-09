@@ -4,14 +4,14 @@ import 'package:equatable/equatable.dart';
 
 // ignore: must_be_immutable
 class CheckList extends Equatable {
-  final String id;
+  final int id;
   CheckListTitle title;
   ChecklistCategory category;
 
   CheckList({required this.id, required this.title, required this.category});
 
   CheckList.empty()
-      : id = "0",
+      : id = 0,
         title = CheckListTitle(value: ""),
         category = ChecklistCategory.others;
 
@@ -21,7 +21,7 @@ class CheckList extends Equatable {
         category = ChecklistCategory.values.byName(json["category"]);
 
   Map<String, dynamic> toJson() =>
-      {"id": id, "title": title.value, "category": category.name};
+      {"title": title.value, "category": category.name};
 
   @override
   List<Object?> get props => [id, title];

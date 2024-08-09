@@ -19,11 +19,11 @@ void main() {
 
   List<CheckList> checklistsTest = [
     CheckList(
-        id: "1",
+        id: 1,
         title: CheckListTitle(value: "compras"),
         category: ChecklistCategory.others),
     CheckList(
-        id: "2",
+        id: 2,
         title: CheckListTitle(value: "compras 2024"),
         category: ChecklistCategory.others)
   ];
@@ -51,14 +51,14 @@ void main() {
 
       expect(checkListController.loadCheckLists(), throwsA(DatabaseException));
 
-      expect(checkListController.error, equals(""));
+      expect(checkListController.errorCode, equals(0));
     });
   });
 
   group("Test adding checklist methods", () {
     test("Should add a new checklist item", () async {
       CheckList newChecklist = CheckList(
-          id: "3",
+          id: 3,
           title: CheckListTitle(value: "Compras 2025"),
           category: ChecklistCategory.others);
       when(checklistDAO.insert(newChecklist)).thenAnswer((_) async => 1);
@@ -70,7 +70,7 @@ void main() {
 
     test("should return DatabaseException on failing to insert", () async {
       CheckList newChecklist = CheckList(
-          id: "3",
+          id: 3,
           title: CheckListTitle(value: "Compras 2025"),
           category: ChecklistCategory.others);
       when(checklistDAO.insert(newChecklist)).thenThrow(DatabaseException);
@@ -83,7 +83,7 @@ void main() {
   group("Test remove checklist methods", () {
     test("Should remove a checklist", () async {
       CheckList checkList = CheckList(
-          id: "1",
+          id: 1,
           title: CheckListTitle(value: "compras"),
           category: ChecklistCategory.others);
 

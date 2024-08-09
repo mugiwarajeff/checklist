@@ -7,5 +7,7 @@ abstract class ChecklistDAO {
 
   Future<int> getCheckListCount();
 
+  Future<int> updateChecklist(CheckList checklist);
+
   Future<int> deleteCheckList(CheckList checklist);
 }

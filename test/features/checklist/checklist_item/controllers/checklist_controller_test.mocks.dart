@@ -48,7 +48,7 @@ class MockChecklistItemDAO extends _i1.Mock implements _i2.ChecklistItemDAO {
 
   @override
   _i3.Future<List<_i4.CheckListItem>> getAll(
-    String? checklistId,
+    int? checklistId,
     _i5.ChecklistOrder? checklistOrder,
   ) =>
       (super.noSuchMethod(

@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class ExclureAreaPainter extends CustomPainter {
+class EditAreaPainter extends CustomPainter {
   final Color color;
   final Offset centerOfCircle;
 
-  ExclureAreaPainter({required this.centerOfCircle, required this.color});
+  EditAreaPainter({required this.centerOfCircle, required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -16,7 +16,7 @@ class ExclureAreaPainter extends CustomPainter {
 
     canvas.drawArc(
       Rect.fromCircle(center: centerOfCircle, radius: 120), //Offset(0, 670)
-      (3 * pi) / 2,
+      pi,
       pi / 2,
       true,
       paint,

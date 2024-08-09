@@ -18,7 +18,7 @@ abstract class CheckListControllerBase with Store {
   bool isLoading = false;
 
   @observable
-  String error = "";
+  int errorCode = 0; //2067
 
   CheckListControllerBase(
       {required ChecklistDAO checkListDao,
@@ -32,8 +32,8 @@ abstract class CheckListControllerBase with Store {
   }
 
   @action
-  void setError(String newError) {
-    error = newError;
+  void setError(int newError) {
+    errorCode = newError;
   }
 
   @action
@@ -45,7 +45,7 @@ abstract class CheckListControllerBase with Store {
       List<CheckList> checklistsFromDb = await _checkListDao.getAll();
       checklists.addAll(checklistsFromDb);
     } on DatabaseException catch (e) {
-      setError(e.toString());
+      setError(e.getResultCode() ?? 0);
 
       await _messageLogger.writeMessage(LogMessage(
           category: "Error",
@@ -68,7 +68,7 @@ abstract class CheckListControllerBase with Store {
         checklists.add(checklist);
       }
     } on DatabaseException catch (e) {
-      error = e.toString();
+      setError(e.getResultCode() ?? 0);
 
       await _messageLogger.writeMessage(LogMessage(
           category: "Error",
@@ -92,7 +92,34 @@ abstract class CheckListControllerBase with Store {
             .removeWhere((checklist) => checklist.id == checklistToDelete.id);
       }
     } on DatabaseException catch (e) {
-      error = e.toString();
+      setError(e.getResultCode() ?? 0);
+
+      await _messageLogger.writeMessage(LogMessage(
+          category: "Error",
+          eventTime: DateTime.now(),
+          message: e.toString(),
+          user: "system"));
+    }
+
+    setIsLoading(false);
+  }
+
+  @action
+  Future<void> updateChecklist(CheckList checklistToUpdate) async {
+    setIsLoading(true);
+
+    try {
+      int result = await _checkListDao.updateChecklist(checklistToUpdate);
+
+      if (result > 0) {
+        int index = checklists.indexWhere(
+          (element) => element.id == checklistToUpdate.id,
+        );
+
+        checklists[index] = checklistToUpdate;
+      }
+    } on DatabaseException catch (e) {
+      setError(e.getResultCode() ?? 0);
 
       await _messageLogger.writeMessage(LogMessage(
           category: "Error",

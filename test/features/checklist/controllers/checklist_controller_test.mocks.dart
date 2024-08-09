@@ -63,6 +63,17 @@ class MockChecklistDAO extends _i1.Mock implements _i2.ChecklistDAO {
       ) as _i3.Future<int>);
 
   @override
+  _i3.Future<int> updateChecklist(_i4.CheckList? checklist) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateChecklist,
+          [checklist],
+        ),
+        returnValue: _i3.Future<int>.value(0),
+        returnValueForMissingStub: _i3.Future<int>.value(0),
+      ) as _i3.Future<int>);
+
+  @override
   _i3.Future<int> deleteCheckList(_i4.CheckList? checklist) =>
       (super.noSuchMethod(
         Invocation.method(

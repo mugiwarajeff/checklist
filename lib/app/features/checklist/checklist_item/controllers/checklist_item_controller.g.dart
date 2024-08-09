@@ -77,7 +77,7 @@ mixin _$ChecklistItemController on ChecklistItemControllerBase, Store {
       AsyncAction('ChecklistItemControllerBase.loadItens', context: context);
 
   @override
-  Future<void> loadItens(String checkListId) {
+  Future<void> loadItens(int checkListId) {
     return _$loadItensAsyncAction.run(() => super.loadItens(checkListId));
   }
 

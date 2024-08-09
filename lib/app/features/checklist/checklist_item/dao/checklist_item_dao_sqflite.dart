@@ -15,7 +15,7 @@ class CheckListItemDaoSqflite implements ChecklistItemDAO {
   static const String _createDate = "create_date";
 
   static const String createTableSql = 'CREATE TABLE $_tableName('
-      '$_checklistId TEXT,'
+      '$_checklistId INTEGER,'
       '$_checklistItemId INTEGER PRIMARY KEY,'
       '$_title TEXT UNIQUE,'
       '$_description TEXT,'
@@ -36,7 +36,7 @@ class CheckListItemDaoSqflite implements ChecklistItemDAO {
 
   @override
   Future<List<CheckListItem>> getAll(
-      String checklistId, ChecklistOrder checklistOrder) async {
+      int checklistId, ChecklistOrder checklistOrder) async {
     Database database = await DatabaseHelper.instance;
 
     String orderByClause = checklistOrder == ChecklistOrder.priority

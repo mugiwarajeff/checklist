@@ -25,19 +25,19 @@ mixin _$CheckListController on CheckListControllerBase, Store {
     });
   }
 
-  late final _$errorAtom =
-      Atom(name: 'CheckListControllerBase.error', context: context);
+  late final _$errorCodeAtom =
+      Atom(name: 'CheckListControllerBase.errorCode', context: context);
 
   @override
-  String get error {
-    _$errorAtom.reportRead();
-    return super.error;
+  int get errorCode {
+    _$errorCodeAtom.reportRead();
+    return super.errorCode;
   }
 
   @override
-  set error(String value) {
-    _$errorAtom.reportWrite(value, super.error, () {
-      super.error = value;
+  set errorCode(int value) {
+    _$errorCodeAtom.reportWrite(value, super.errorCode, () {
+      super.errorCode = value;
     });
   }
 
@@ -66,6 +66,15 @@ mixin _$CheckListController on CheckListControllerBase, Store {
         .run(() => super.deleteCheckList(checklistToDelete));
   }
 
+  late final _$updateChecklistAsyncAction =
+      AsyncAction('CheckListControllerBase.updateChecklist', context: context);
+
+  @override
+  Future<void> updateChecklist(CheckList checklistToUpdate) {
+    return _$updateChecklistAsyncAction
+        .run(() => super.updateChecklist(checklistToUpdate));
+  }
+
   late final _$CheckListControllerBaseActionController =
       ActionController(name: 'CheckListControllerBase', context: context);
 
@@ -81,7 +90,7 @@ mixin _$CheckListController on CheckListControllerBase, Store {
   }
 
   @override
-  void setError(String newError) {
+  void setError(int newError) {
     final _$actionInfo = _$CheckListControllerBaseActionController.startAction(
         name: 'CheckListControllerBase.setError');
     try {
@@ -95,7 +104,7 @@ mixin _$CheckListController on CheckListControllerBase, Store {
   String toString() {
     return '''
 isLoading: ${isLoading},
-error: ${error}
+errorCode: ${errorCode}
     ''';
   }
 }

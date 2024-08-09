@@ -74,7 +74,7 @@ abstract class ChecklistItemControllerBase with Store {
   }
 
   @action
-  Future<void> loadItens(String checkListId) async {
+  Future<void> loadItens(int checkListId) async {
     setIsLoading(true);
 
     try {

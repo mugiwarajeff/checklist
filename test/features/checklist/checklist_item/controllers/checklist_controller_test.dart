@@ -24,7 +24,7 @@ void main() {
     CheckListItem(
         checklistItemId: 1,
         checked: false,
-        checklistId: "1",
+        checklistId: 2,
         description: "teste",
         title: ChecklistItemTitle(value: "Cafe"),
         dueDate: null,
@@ -32,7 +32,7 @@ void main() {
     CheckListItem(
         checklistItemId: 2,
         checked: false,
-        checklistId: "1",
+        checklistId: 1,
         description: "teste2",
         title: ChecklistItemTitle(value: "arroz"),
         dueDate: null,
@@ -54,7 +54,7 @@ void main() {
 
   group("Test loadItens", () {
     test("Should load all itens of a checklist", () async {
-      String checkListId = "1";
+      int checkListId = 1;
 
       when(checklistItemDAO.getAll(checkListId, ChecklistOrder.creation))
           .thenAnswer((_) async => itemsForTesting);
@@ -68,7 +68,7 @@ void main() {
     });
 
     test("Should generate a error when loading itens", () async {
-      String checkListId = "1";
+      int checkListId = 1;
 
       when(checklistItemDAO.getAll(checkListId, ChecklistOrder.creation))
           .thenThrow(HttpException);
@@ -96,7 +96,7 @@ void main() {
       CheckListItem checkListItem = CheckListItem(
           checklistItemId: 1,
           checked: false,
-          checklistId: "3",
+          checklistId: 3,
           description: "Teste2",
           title: ChecklistItemTitle(value: "olá"),
           dueDate: null,
@@ -114,7 +114,7 @@ void main() {
       CheckListItem checkListItem = CheckListItem(
           checklistItemId: 1,
           checked: false,
-          checklistId: "3",
+          checklistId: 3,
           description: "Teste2",
           title: ChecklistItemTitle(value: "olá"),
           dueDate: null,
@@ -135,7 +135,7 @@ void main() {
       CheckListItem checkListItemToDelete = CheckListItem(
           checklistItemId: 1,
           checked: false,
-          checklistId: "1",
+          checklistId: 1,
           description: "teste2",
           title: ChecklistItemTitle(value: "arroz"),
           dueDate: null,

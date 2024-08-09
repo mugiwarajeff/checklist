@@ -1,7 +1,7 @@
 import 'package:checklist/app/features/checklist/checklist_item/models/value_objects/checklist_title.dart';
 
 class CheckListItem {
-  String checklistId;
+  int checklistId;
   int checklistItemId;
   ChecklistItemTitle title;
   String description;
@@ -21,7 +21,7 @@ class CheckListItem {
   CheckListItem.empty()
       : checklistItemId = 0,
         checked = false,
-        checklistId = "",
+        checklistId = 0,
         description = "",
         title = ChecklistItemTitle(value: ""),
         createDate = DateTime.now(),

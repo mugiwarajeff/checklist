@@ -6,14 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-class AddChecklistDialog extends StatelessWidget {
-  final CheckList checkList;
+class ChecklistFormDialog extends StatelessWidget {
+  final CheckList? checklist;
+  final CheckList checkListCopy;
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
-  AddChecklistDialog({super.key, required String checkListid})
-      : checkList = CheckList(
-            id: checkListid,
-            title: CheckListTitle(value: ""),
-            category: ChecklistCategory.shopping);
+  ChecklistFormDialog({super.key, this.checklist})
+      : checkListCopy = checklist ??
+            CheckList(
+                id: 0,
+                title: CheckListTitle(value: ""),
+                category: ChecklistCategory.shopping);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,9 @@ class AddChecklistDialog extends StatelessWidget {
     final Color cancelButtonSecondColor =
         Theme.of(context).colorScheme.onTertiary;
     final String titleLabel = AppLocalizations.of(context)!.newList;
+    final String updateTitleLabel = AppLocalizations.of(context)!.updateList;
     final String titleHelper = AppLocalizations.of(context)!.typeTitleList;
+    final String updateText = AppLocalizations.of(context)!.update;
     final String createText = AppLocalizations.of(context)!.create;
     final String cancelText = AppLocalizations.of(context)!.cancel;
 
@@ -63,7 +67,7 @@ class AddChecklistDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                titleLabel,
+                checklist == null ? titleLabel : updateTitleLabel,
                 style: const TextStyle(fontSize: 26),
               ),
               const SizedBox(
@@ -81,10 +85,11 @@ class AddChecklistDialog extends StatelessWidget {
                           label: Text(titleHelper),
                           hintText: titleHelper,
                         ),
-                        validator: (value) => checkList.title
+                        initialValue: checkListCopy.title.value,
+                        validator: (value) => checkListCopy.title
                             .validate(value, AppLocalizations.of(context)),
                         onChanged: (value) =>
-                            checkList.title = CheckListTitle(value: value),
+                            checkListCopy.title = CheckListTitle(value: value),
                       ),
                       const SizedBox(
                         height: 20,
@@ -96,7 +101,7 @@ class AddChecklistDialog extends StatelessWidget {
                           label: Text(categoryText),
                           hintText: categoryHint,
                         ),
-                        value: checkList.category,
+                        value: checkListCopy.category,
                         items: ChecklistCategory.values
                             .map((category) => DropdownMenuItem(
                                   value: category,
@@ -105,7 +110,7 @@ class AddChecklistDialog extends StatelessWidget {
                             .toList(),
                         onChanged: (value) {
                           if (value != null) {
-                            checkList.category = value;
+                            checkListCopy.category = value;
                           }
                         },
                       )
@@ -122,12 +127,22 @@ class AddChecklistDialog extends StatelessWidget {
                     ElevatedButton(
                         onPressed: () async {
                           if (_formState.currentState?.validate() ?? false) {
-                            await checkListController.addCheckList(checkList);
+                            if (checklist == null) {
+                              await checkListController
+                                  .addCheckList(checkListCopy);
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context).pop();
+                              return;
+                            }
+
+                            await checkListController
+                                .updateChecklist(checkListCopy);
                             // ignore: use_build_context_synchronously
                             Navigator.of(context).pop();
                           }
                         },
-                        child: Text(createText)),
+                        child:
+                            Text(checklist == null ? createText : updateText)),
                     ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(),
                       style: ButtonStyle(

@@ -10,8 +10,8 @@ class CheckListDaoSqFlite implements ChecklistDAO {
   static const String _category = "category";
 
   static const String createTableSql = 'CREATE TABLE $_tableName('
-      '$_checklistId TEXT PRIMARY KEY,'
-      '$_checklistTitle TEXT,'
+      '$_checklistId INTEGER PRIMARY KEY,'
+      '$_checklistTitle TEXT UNIQUE,'
       '$_category TEXT'
       ')';
 
@@ -53,5 +53,15 @@ class CheckListDaoSqFlite implements ChecklistDAO {
         where: "$_checklistId = ?", whereArgs: [checklist.id]);
 
     return count;
+  }
+
+  @override
+  Future<int> updateChecklist(CheckList checklist) async {
+    Database database = await DatabaseHelper.instance;
+
+    int result = await database.update(_tableName, checklist.toJson(),
+        where: "$_checklistId = ?", whereArgs: [checklist.id]);
+
+    return result;
   }
 }

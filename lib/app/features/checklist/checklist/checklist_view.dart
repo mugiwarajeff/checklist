@@ -1,11 +1,13 @@
 import 'package:checklist/app/features/checklist/checklist/controllers/checklist_controller.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
-import 'package:checklist/app/features/checklist/checklist/widgets/add_checklist_dialog.dart';
+import 'package:checklist/app/features/checklist/checklist/widgets/checklist_form_dialog.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/checklist_card.dart';
+import 'package:checklist/app/features/checklist/checklist/widgets/painters/edit_area_painter.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/painters/exclure_area_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
 class CheckListView extends StatefulWidget {
@@ -31,9 +33,35 @@ class _CheckListViewState extends State<CheckListView> {
     const double checkListPadding = 0;
     const double crossSpacin = 10;
 
+    Color primaryColor = Theme.of(context).colorScheme.primary;
     Color redColor = Theme.of(context).colorScheme.error;
     Color onRedColor = Theme.of(context).colorScheme.onError;
 
+    reaction((_) => checkListController.errorCode, (int errorCode) {
+      if (errorCode != 0) {
+        String message = "";
+
+        switch (errorCode) {
+          case 2067:
+            message = AppLocalizations.of(context)!.wasNotPossibleToUpdate;
+            break;
+
+          default:
+            message = "Error not recognized";
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(message),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.error,
+          padding: const EdgeInsets.all(8),
+        ));
+
+        checkListController.errorCode = 0;
+      }
+    });
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(checkListPadding),
@@ -43,10 +71,6 @@ class _CheckListViewState extends State<CheckListView> {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            }
-
-            if (checkListController.error != "") {
-              return Center(child: Text(checkListController.error));
             }
 
             return Stack(
@@ -79,8 +103,8 @@ class _CheckListViewState extends State<CheckListView> {
                 Align(
                   alignment: Alignment.bottomLeft,
                   child: SizedBox(
-                    width: 150,
-                    height: 150,
+                    width: 100,
+                    height: 100,
                     child: DragTarget<CheckList>(
                       builder: (context, candidateData, rejectedData) =>
                           LayoutBuilder(
@@ -142,34 +166,64 @@ class _CheckListViewState extends State<CheckListView> {
                     ),
                   ),
                 ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: DragTarget<CheckList>(
+                      builder: (context, candidateData, rejectedData) =>
+                          LayoutBuilder(
+                        builder: (context, constraints) => Visibility(
+                          visible: isDragging,
+                          child: CustomPaint(
+                            painter: EditAreaPainter(
+                              color: primaryColor,
+                              centerOfCircle: Offset(
+                                  constraints.maxWidth, constraints.maxHeight),
+                            ),
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: Icon(
+                                  Icons.edit,
+                                  color: onRedColor,
+                                  size: 56,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      onAcceptWithDetails: (details) {
+                        showDialog(
+                            context: context,
+                            builder: (context) => ChecklistFormDialog(
+                                  checklist: details.data,
+                                ));
+                      },
+                    ),
+                  ),
+                ),
               ],
             );
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          int countOfChecklist = checkListController.checklists.length;
-
-          showDialog(
-            context: context,
-            builder: (context) => AddChecklistDialog(
-                checkListid: (countOfChecklist + 1).toString()),
-          );
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: Visibility(
+        visible: !isDragging,
+        child: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => ChecklistFormDialog(),
+            );
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
 }
-
-
-/**
- * onWillAcceptWithDetails: (details) {
-                        bool accept = false;
-
-                        
-
-                        return accept;
-                      }
- */

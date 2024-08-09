@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CheckListItemView extends StatefulWidget {
-  final String checkListId;
+  final int checkListId;
   final String checkListTitle;
 
   const CheckListItemView(

@@ -5,6 +5,8 @@
     "newList": "Nova Lista",
     "title": "Titulo",
     "create": "Criar",
+    "update": "Atualizar",
+    "updateList": "Atualizar Listinha",
     "confirm": "Confirm",
     "cancel": "Cancelar",
     "item": "Item",
@@ -33,5 +35,5 @@
     "study": "Estudos",
     "others": "Outros",
     "titleItem": "Titulo do item",
-    "wasNotPossibleToUpdate": "Não foi possivel atualizar pois já existe outro item com esse nome"
+    "wasNotPossibleToUpdate": "Não foi possivel criar ou atualizar pois já existe outro item com esse nome"
 }

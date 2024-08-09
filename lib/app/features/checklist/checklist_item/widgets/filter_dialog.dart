@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class FilterDialog extends StatelessWidget {
-  final String checklistItemId;
+  final int checklistItemId;
   final ChecklistItemController checklistItemController;
   const FilterDialog(
       {super.key,

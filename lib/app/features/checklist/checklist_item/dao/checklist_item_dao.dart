@@ -5,7 +5,7 @@ abstract class ChecklistItemDAO {
   Future<int> insertItem(CheckListItem checkListItem);
 
   Future<List<CheckListItem>> getAll(
-      String checklistId, ChecklistOrder checklistOrder);
+      int checklistId, ChecklistOrder checklistOrder);
 
   Future<int> updateItem(CheckListItem checkListItem);
 
