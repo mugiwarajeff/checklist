@@ -41,6 +41,22 @@ mixin _$ConfigurationsController on ConfigurationsControllerBase, Store {
     });
   }
 
+  late final _$localeAtom =
+      Atom(name: 'ConfigurationsControllerBase.locale', context: context);
+
+  @override
+  Locale get locale {
+    _$localeAtom.reportRead();
+    return super.locale;
+  }
+
+  @override
+  set locale(Locale value) {
+    _$localeAtom.reportWrite(value, super.locale, () {
+      super.locale = value;
+    });
+  }
+
   late final _$errorAtom =
       Atom(name: 'ConfigurationsControllerBase.error', context: context);
 
@@ -104,6 +120,7 @@ mixin _$ConfigurationsController on ConfigurationsControllerBase, Store {
     return '''
 config: ${config},
 isLoading: ${isLoading},
+locale: ${locale},
 error: ${error}
     ''';
   }

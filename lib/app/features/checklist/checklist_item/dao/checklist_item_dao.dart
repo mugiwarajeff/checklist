@@ -7,6 +7,8 @@ abstract class ChecklistItemDAO {
   Future<List<CheckListItem>> getAll(
       int checklistId, ChecklistOrder checklistOrder);
 
+  Future<List<CheckListItem>> getItensWithDueDate();
+
   Future<int> updateItem(CheckListItem checkListItem);
 
   Future<int> deleteItem(CheckListItem checkListItem);

@@ -14,12 +14,14 @@ class AppTheme {
             fontSize: 24,
           )),
       searchBarTheme: SearchBarThemeData(
-          shadowColor: WidgetStatePropertyAll(lightColorScheme.secondary),
+          shadowColor: WidgetStatePropertyAll(lightColorScheme.primary),
           surfaceTintColor: WidgetStatePropertyAll(lightColorScheme.primary)),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         foregroundColor: lightColorScheme.onPrimary,
         backgroundColor: lightColorScheme.primary,
       ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: lightColorScheme.primary),
       colorScheme: lightColorScheme);
 
   final ThemeData darkTheme = ThemeData(
@@ -35,9 +37,14 @@ class AppTheme {
             color: darkColorScheme.onPrimary,
             fontSize: 24,
           )),
+      searchBarTheme: SearchBarThemeData(
+          shadowColor: WidgetStatePropertyAll(darkColorScheme.primary),
+          surfaceTintColor: WidgetStatePropertyAll(darkColorScheme.primary)),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         foregroundColor: darkColorScheme.onPrimary,
         backgroundColor: darkColorScheme.primary,
       ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: darkColorScheme.primary),
       colorScheme: darkColorScheme);
 }

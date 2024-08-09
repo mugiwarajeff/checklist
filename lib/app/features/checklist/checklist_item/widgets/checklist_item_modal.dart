@@ -1,4 +1,3 @@
-import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/value_objects/checklist_title.dart';
 
@@ -7,14 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChecklistItemModal extends StatefulWidget {
-  final ChecklistItemController checklistItemController;
   final TextEditingController dueDateController;
+  final Function(CheckListItem checklistItem) updateCallback;
   final CheckListItem checkListItem;
 
   ChecklistItemModal(
-      {super.key,
-      required this.checkListItem,
-      required this.checklistItemController})
+      {super.key, required this.checkListItem, required this.updateCallback})
       : dueDateController = TextEditingController(
             text: checkListItem.dueDate == null
                 ? ""
@@ -75,9 +72,7 @@ class _ChecklistItemModalState extends State<ChecklistItemModal> {
       canPop: formState.currentState?.validate() ?? false,
       onPopInvoked: (didPop) async {
         if (formState.currentState?.validate() ?? false) {
-          await widget.checklistItemController.updateItem(checkListItemCopy);
-          widget.checklistItemController
-              .loadItens(checkListItemCopy.checklistId);
+          widget.updateCallback(checkListItemCopy);
         }
       },
       child: Padding(
@@ -180,3 +175,10 @@ class _ChecklistItemModalState extends State<ChecklistItemModal> {
     );
   }
 }
+
+
+/**
+ *  await widget.checklistItemController.updateItem(checkListItemCopy);
+          widget.checklistItemController
+              .loadItens(checkListItemCopy.checklistId);
+ */

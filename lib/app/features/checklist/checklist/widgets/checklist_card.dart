@@ -11,6 +11,7 @@ class CheckListCard extends StatelessWidget {
     final Color primaryColor = Theme.of(context).colorScheme.primary;
     final Color tertiaryColor = Theme.of(context).colorScheme.tertiary;
     final Color onPrimaryColor = Theme.of(context).colorScheme.onPrimary;
+
     final double widthCard = MediaQuery.of(context).size.width;
     final double heightCard = MediaQuery.of(context).size.width;
     const double textSize = 24;

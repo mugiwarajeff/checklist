@@ -16,6 +16,8 @@ class App extends StatelessWidget {
     final ConfigurationsController configurationsController =
         Provider.of<ConfigurationsController>(context);
 
+    configurationsController.loadConfigs();
+
     return Observer(builder: (context) {
       if (configurationsController.isLoading) {
         return const Center(

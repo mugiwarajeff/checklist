@@ -1,4 +1,5 @@
 import 'package:checklist/app/app.dart';
+import 'package:checklist/app/features/calendar/controllers/calendar_controller.dart';
 import 'package:checklist/app/features/checklist/checklist/controllers/checklist_controller.dart';
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao.dart';
 import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
@@ -52,6 +53,11 @@ void main() async {
     ProxyProvider<ConfigurationsDAO, ConfigurationsController>(
       update: (context, configurationsDAO, previous) =>
           ConfigurationsController(configurationsDAO: configurationsDAO),
+    ),
+    ProxyProvider2<ChecklistItemDAO, MessageLogger, CalendarController>(
+      update: (context, checklistItemDAO, messageLogger, previous) =>
+          CalendarController(
+              checklistItemDAO: checklistItemDAO, messageLogger: messageLogger),
     )
   ], child: App()));
 }

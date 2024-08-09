@@ -39,5 +39,7 @@
     "wasNotPossibleToUpdate": "Was not possible to create or update because already exists an item with this title",
     "searchYourList": "Search your list",
     "closePage": "Close",
-     "checklistFilter": "Checklist Filter"
+     "checklistFilter": "Checklist Filter",
+     "lists": "Lists",
+     "calendar": "Calendar"
 }

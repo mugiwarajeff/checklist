@@ -19,6 +19,8 @@ class ConfigurationsDaoSqflite implements ConfigurationsDAO {
     int updatedIten =
         await database.update(_tableName, configurations.toJson());
 
+    print(updatedIten);
+
     return updatedIten;
   }
 

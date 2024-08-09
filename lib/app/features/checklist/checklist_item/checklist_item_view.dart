@@ -100,8 +100,15 @@ class _CheckListItemViewState extends State<CheckListItemView> {
               children: [
                 ...checkListItemStore.checklistItems
                     .map((checkListItem) => CheckListItemCard(
+                          updateCallback: (CheckListItem checklistItem) async {
+                            await checkListItemStore.updateItem(checklistItem);
+                            checkListItemStore
+                                .loadItens(checklistItem.checklistId);
+                          },
                           checkListItem: checkListItem,
-                          checkListItemController: checkListItemStore,
+                          deleteCallback: (CheckListItem checklistItem) {
+                            checkListItemStore.deleteItem(checkListItem);
+                          },
                         ))
                     .toList(),
                 Observer(

@@ -1,4 +1,3 @@
-import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:checklist/app/features/checklist/checklist_item/widgets/checklist_item_modal.dart';
 import 'package:checklist/app/shared/utils/utils.dart';
@@ -7,12 +6,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CheckListItemCard extends StatelessWidget {
   final CheckListItem checkListItem;
-  final ChecklistItemController checkListItemController;
+  final Function(CheckListItem checklistItem) updateCallback;
+  final Function(CheckListItem checklistItem) deleteCallback;
 
   const CheckListItemCard(
       {super.key,
       required this.checkListItem,
-      required this.checkListItemController});
+      required this.updateCallback,
+      required this.deleteCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class CheckListItemCard extends StatelessWidget {
       DateTime dateTime = DateTime.now();
 
       if (checkListItem.dueDate == null) {
-        return null;
+        return (Colors.grey, "");
       }
 
       if (Utils.isToday(dateTime, checkListItem.dueDate!)) {
@@ -77,8 +78,9 @@ class CheckListItemCard extends StatelessWidget {
                     ));
           },
           direction: DismissDirection.endToStart,
-          onDismissed: (direction) =>
-              {checkListItemController.deleteItem(checkListItem)},
+          onDismissed: (direction) => {
+            deleteCallback(checkListItem)
+          }, //checkListItemController.deleteItem(checkListItem)
           background: Container(
             color: Theme.of(context).colorScheme.error,
             child: Padding(
@@ -117,26 +119,23 @@ class CheckListItemCard extends StatelessWidget {
                 context: context,
                 builder: (context) => ChecklistItemModal(
                   checkListItem: checkListItem,
-                  checklistItemController: checkListItemController,
+                  updateCallback: updateCallback,
                 ),
               )
             },
             child: ListTile(
-              leading: Visibility(
-                visible: checkListItem.dueDate != null,
-                child: Container(
-                  height: 15,
-                  width: 15,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: checkVisualForDuedate()?.$1),
-                ),
+              leading: Container(
+                height: 15,
+                width: 15,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: checkVisualForDuedate()?.$1),
               ),
               trailing: Checkbox(
                 value: checkListItem.checked,
                 onChanged: (value) {
                   checkListItem.checked = value ?? false;
-                  checkListItemController.updateItem(checkListItem);
+                  updateCallback(checkListItem);
                 },
               ),
               title: Text(

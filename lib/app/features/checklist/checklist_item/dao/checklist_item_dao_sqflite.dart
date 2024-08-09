@@ -71,4 +71,19 @@ class CheckListItemDaoSqflite implements ChecklistItemDAO {
 
     return deletedItem;
   }
+
+  @override
+  Future<List<CheckListItem>> getItensWithDueDate() async {
+    Database database = await DatabaseHelper.instance;
+
+    String whereClause = "$_dueDate IS NOT NULL";
+
+    List<Map<String, Object?>> queryResult =
+        await database.query(_tableName, where: whereClause);
+
+    List<CheckListItem> checklistItens =
+        queryResult.map((mapItem) => CheckListItem.fromJson(mapItem)).toList();
+
+    return checklistItens;
+  }
 }

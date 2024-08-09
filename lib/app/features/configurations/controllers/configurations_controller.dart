@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:checklist/app/features/configurations/dao/interface/configurations_dao.dart';
 import 'package:checklist/app/features/configurations/models/configurations.dart';
 import 'package:mobx/mobx.dart';
@@ -15,6 +17,9 @@ abstract class ConfigurationsControllerBase with Store {
 
   @observable
   bool isLoading = false;
+
+  @observable
+  Locale locale = const Locale("pt", "BR");
 
   @observable
   String error = "";
