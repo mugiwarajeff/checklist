@@ -37,7 +37,7 @@ void main() {
 
   group("Test loading operations", () {
     test("should load correctly the checklist in the database", () async {
-      when(checklistDAO.getAll()).thenAnswer((_) async => checklistsTest);
+      when(checklistDAO.getAll(null)).thenAnswer((_) async => checklistsTest);
 
       await checkListController.loadCheckLists();
 
@@ -47,7 +47,7 @@ void main() {
     });
 
     test("should update a error when getting DatabaseException", () async {
-      when(checklistDAO.getAll()).thenThrow(DatabaseException);
+      when(checklistDAO.getAll(null)).thenThrow(DatabaseException);
 
       expect(checkListController.loadCheckLists(), throwsA(DatabaseException));
 
