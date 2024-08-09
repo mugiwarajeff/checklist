@@ -7,11 +7,13 @@ import 'dart:async' as _i3;
 
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao.dart'
     as _i2;
+import 'package:checklist/app/features/checklist/checklist/enum/checklist_category.dart'
+    as _i5;
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart'
     as _i4;
 import 'package:checklist/app/shared/logs/interfaces/message_logger.dart'
-    as _i5;
-import 'package:checklist/app/shared/logs/models/log_message.dart' as _i6;
+    as _i6;
+import 'package:checklist/app/shared/logs/models/log_message.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -32,10 +34,12 @@ import 'package:mockito/mockito.dart' as _i1;
 /// See the documentation for Mockito's code generation for more information.
 class MockChecklistDAO extends _i1.Mock implements _i2.ChecklistDAO {
   @override
-  _i3.Future<List<_i4.CheckList>> getAll() => (super.noSuchMethod(
+  _i3.Future<List<_i4.CheckList>> getAll(
+          _i5.ChecklistCategory? checklistCategoryFilter) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getAll,
-          [],
+          [checklistCategoryFilter],
         ),
         returnValue: _i3.Future<List<_i4.CheckList>>.value(<_i4.CheckList>[]),
         returnValueForMissingStub:
@@ -88,9 +92,9 @@ class MockChecklistDAO extends _i1.Mock implements _i2.ChecklistDAO {
 /// A class which mocks [MessageLogger].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMessageLogger extends _i1.Mock implements _i5.MessageLogger {
+class MockMessageLogger extends _i1.Mock implements _i6.MessageLogger {
   @override
-  _i3.Future<bool> writeMessage(_i6.LogMessage? logMessage) =>
+  _i3.Future<bool> writeMessage(_i7.LogMessage? logMessage) =>
       (super.noSuchMethod(
         Invocation.method(
           #writeMessage,

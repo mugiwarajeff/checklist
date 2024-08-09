@@ -13,6 +13,9 @@ class AppTheme {
             color: lightColorScheme.onPrimary,
             fontSize: 24,
           )),
+      searchBarTheme: SearchBarThemeData(
+          shadowColor: WidgetStatePropertyAll(lightColorScheme.secondary),
+          surfaceTintColor: WidgetStatePropertyAll(lightColorScheme.primary)),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         foregroundColor: lightColorScheme.onPrimary,
         backgroundColor: lightColorScheme.primary,

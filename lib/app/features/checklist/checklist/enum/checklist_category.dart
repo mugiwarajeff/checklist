@@ -1,1 +1,1 @@
-enum ChecklistCategory { shopping, house, work, study, others }
+enum ChecklistCategory { shopping, market, house, work, study, others }

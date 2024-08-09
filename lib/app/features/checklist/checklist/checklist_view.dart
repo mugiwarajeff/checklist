@@ -1,5 +1,6 @@
 import 'package:checklist/app/features/checklist/checklist/controllers/checklist_controller.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
+import 'package:checklist/app/features/checklist/checklist/widgets/checklist_filter_dialog.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/checklist_form_dialog.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/checklist_card.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/painters/edit_area_painter.dart';
@@ -18,10 +19,12 @@ class CheckListView extends StatefulWidget {
 }
 
 class _CheckListViewState extends State<CheckListView> {
+  final TextEditingController searchText = TextEditingController();
   bool isDragging = false;
 
   @override
   Widget build(BuildContext context) {
+    final String searchHint = AppLocalizations.of(context)!.searchYourList;
     final String confirmButton = AppLocalizations.of(context)!.confirm;
     final String cancelButton = AppLocalizations.of(context)!.cancel;
     final String confirmationText =
@@ -77,27 +80,69 @@ class _CheckListViewState extends State<CheckListView> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Observer(
-                    builder: (context) => GridView.count(
-                        crossAxisSpacing: crossSpacin,
-                        crossAxisCount: 2,
-                        children: checkListController.checklists
-                            .map((checklist) => Draggable<CheckList>(
-                                  childWhenDragging: Container(),
-                                  onDragStarted: () => setState(() {
-                                    isDragging = true;
-                                  }),
-                                  onDraggableCanceled: (_, __) => setState(() {
-                                    isDragging = false;
-                                  }),
-                                  onDragCompleted: () => setState(() {
-                                    isDragging = false;
-                                  }),
-                                  data: checklist,
-                                  feedback: CheckListCard(checkList: checklist),
-                                  child: CheckListCard(checkList: checklist),
-                                ))
-                            .toList()),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SearchBar(
+                          controller: searchText,
+                          hintText: searchHint,
+                          onChanged: (value) {
+                            checkListController.setSearchText(value);
+                          },
+                          leading: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.search),
+                          ),
+                          trailing: [
+                            IconButton(
+                                onPressed: () {
+                                  checkListController.setSearchText("");
+                                  searchText.text = "";
+                                },
+                                icon: const Icon(Icons.close)),
+                            IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          ChecklistFilterDialog(
+                                              checkListController:
+                                                  checkListController));
+                                },
+                                icon: const Icon(Icons.filter_alt))
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Observer(
+                          builder: (context) => GridView.count(
+                              crossAxisSpacing: crossSpacin,
+                              crossAxisCount: 2,
+                              children: checkListController.checklists
+                                  .map((checklist) => Draggable<CheckList>(
+                                        childWhenDragging: Container(),
+                                        onDragStarted: () => setState(() {
+                                          isDragging = true;
+                                        }),
+                                        onDraggableCanceled: (_, __) =>
+                                            setState(() {
+                                          isDragging = false;
+                                        }),
+                                        onDragCompleted: () => setState(() {
+                                          isDragging = false;
+                                        }),
+                                        data: checklist,
+                                        feedback:
+                                            CheckListCard(checkList: checklist),
+                                        child:
+                                            CheckListCard(checkList: checklist),
+                                      ))
+                                  .toList()),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Align(

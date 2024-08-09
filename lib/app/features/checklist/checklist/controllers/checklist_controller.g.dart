@@ -9,6 +9,40 @@ part of 'checklist_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$CheckListController on CheckListControllerBase, Store {
+  late final _$searchTextAtom =
+      Atom(name: 'CheckListControllerBase.searchText', context: context);
+
+  @override
+  String get searchText {
+    _$searchTextAtom.reportRead();
+    return super.searchText;
+  }
+
+  @override
+  set searchText(String value) {
+    _$searchTextAtom.reportWrite(value, super.searchText, () {
+      super.searchText = value;
+    });
+  }
+
+  late final _$checklistCategoryFilterAtom = Atom(
+      name: 'CheckListControllerBase.checklistCategoryFilter',
+      context: context);
+
+  @override
+  ChecklistCategory? get checklistCategoryFilter {
+    _$checklistCategoryFilterAtom.reportRead();
+    return super.checklistCategoryFilter;
+  }
+
+  @override
+  set checklistCategoryFilter(ChecklistCategory? value) {
+    _$checklistCategoryFilterAtom
+        .reportWrite(value, super.checklistCategoryFilter, () {
+      super.checklistCategoryFilter = value;
+    });
+  }
+
   late final _$isLoadingAtom =
       Atom(name: 'CheckListControllerBase.isLoading', context: context);
 
@@ -79,6 +113,28 @@ mixin _$CheckListController on CheckListControllerBase, Store {
       ActionController(name: 'CheckListControllerBase', context: context);
 
   @override
+  void setChecklistCategoryFilter(ChecklistCategory? checklistCategory) {
+    final _$actionInfo = _$CheckListControllerBaseActionController.startAction(
+        name: 'CheckListControllerBase.setChecklistCategoryFilter');
+    try {
+      return super.setChecklistCategoryFilter(checklistCategory);
+    } finally {
+      _$CheckListControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setSearchText(String searchText) {
+    final _$actionInfo = _$CheckListControllerBaseActionController.startAction(
+        name: 'CheckListControllerBase.setSearchText');
+    try {
+      return super.setSearchText(searchText);
+    } finally {
+      _$CheckListControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setIsLoading(bool newState) {
     final _$actionInfo = _$CheckListControllerBaseActionController.startAction(
         name: 'CheckListControllerBase.setIsLoading');
@@ -103,6 +159,8 @@ mixin _$CheckListController on CheckListControllerBase, Store {
   @override
   String toString() {
     return '''
+searchText: ${searchText},
+checklistCategoryFilter: ${checklistCategoryFilter},
 isLoading: ${isLoading},
 errorCode: ${errorCode}
     ''';

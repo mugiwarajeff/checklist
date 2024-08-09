@@ -2,6 +2,7 @@ import 'package:checklist/app/features/checklist/checklist/controllers/checklist
 import 'package:checklist/app/features/checklist/checklist/enum/checklist_category.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/features/checklist/checklist/models/value_objects/checklist_title.dart';
+import 'package:checklist/app/features/checklist/checklist/utils/checklist_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -34,28 +35,6 @@ class ChecklistFormDialog extends StatelessWidget {
 
     final String categoryText = AppLocalizations.of(context)!.category;
     final String categoryHint = AppLocalizations.of(context)!.categoryHint;
-
-    final String shoppingText = AppLocalizations.of(context)!.shopping;
-    final String houseText = AppLocalizations.of(context)!.house;
-
-    final String workText = AppLocalizations.of(context)!.work;
-    final String studyText = AppLocalizations.of(context)!.study;
-    final String othersText = AppLocalizations.of(context)!.others;
-
-    String translateCategory(ChecklistCategory category) {
-      switch (category) {
-        case ChecklistCategory.shopping:
-          return shoppingText;
-        case ChecklistCategory.house:
-          return houseText;
-        case ChecklistCategory.work:
-          return workText;
-        case ChecklistCategory.study:
-          return studyText;
-        case ChecklistCategory.others:
-          return othersText;
-      }
-    }
 
     const double contentPadding = 16;
     return Dialog(
@@ -105,7 +84,8 @@ class ChecklistFormDialog extends StatelessWidget {
                         items: ChecklistCategory.values
                             .map((category) => DropdownMenuItem(
                                   value: category,
-                                  child: Text(translateCategory(category)),
+                                  child: Text(ChecklistUtils.translateCategory(
+                                      category, AppLocalizations.of(context)!)),
                                 ))
                             .toList(),
                         onChanged: (value) {

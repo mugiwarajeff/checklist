@@ -32,8 +32,12 @@
     "shopping": "Compras",
     "house": "Casa",
     "work": "Trabalho",
+    "market": "Mercado",
     "study": "Estudos",
     "others": "Outros",
     "titleItem": "Titulo do item",
-    "wasNotPossibleToUpdate": "Não foi possivel criar ou atualizar pois já existe outro item com esse nome"
+    "wasNotPossibleToUpdate": "Não foi possivel criar ou atualizar pois já existe outro item com esse nome",
+    "searchYourList": "Pesquise sua Listinha",
+    "closePage": "Fechar",
+      "checklistFilter": "Filtro de Listinha"
 }

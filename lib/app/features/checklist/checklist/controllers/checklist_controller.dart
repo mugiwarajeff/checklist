@@ -1,4 +1,5 @@
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao.dart';
+import 'package:checklist/app/features/checklist/checklist/enum/checklist_category.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
 import 'package:checklist/app/shared/logs/models/log_message.dart';
@@ -12,19 +13,46 @@ abstract class CheckListControllerBase with Store {
   final ChecklistDAO _checkListDao;
   final MessageLogger _messageLogger;
 
-  ObservableList<CheckList> checklists = ObservableList<CheckList>();
+  // ignore: prefer_final_fields
+  ObservableList<CheckList> _checklists = ObservableList<CheckList>();
+
+  List<CheckList> get checklists {
+    return _checklists.where((checklist) {
+      if (searchText == "") {
+        return true;
+      }
+
+      return checklist.title.value.contains(searchText);
+    }).toList();
+  }
+
+  @observable
+  String searchText = "";
+
+  @observable
+  ChecklistCategory? checklistCategoryFilter;
 
   @observable
   bool isLoading = false;
 
   @observable
-  int errorCode = 0; //2067
+  int errorCode = 0;
 
   CheckListControllerBase(
       {required ChecklistDAO checkListDao,
       required MessageLogger messagelogger})
       : _checkListDao = checkListDao,
         _messageLogger = messagelogger;
+
+  @action
+  void setChecklistCategoryFilter(ChecklistCategory? checklistCategory) {
+    checklistCategoryFilter = checklistCategory;
+  }
+
+  @action
+  void setSearchText(String searchText) {
+    this.searchText = searchText;
+  }
 
   @action
   void setIsLoading(bool newState) {
@@ -41,9 +69,10 @@ abstract class CheckListControllerBase with Store {
     setIsLoading(true);
 
     try {
-      checklists.clear();
-      List<CheckList> checklistsFromDb = await _checkListDao.getAll();
-      checklists.addAll(checklistsFromDb);
+      _checklists.clear();
+      List<CheckList> checklistsFromDb =
+          await _checkListDao.getAll(checklistCategoryFilter);
+      _checklists.addAll(checklistsFromDb);
     } on DatabaseException catch (e) {
       setError(e.getResultCode() ?? 0);
 
@@ -65,7 +94,7 @@ abstract class CheckListControllerBase with Store {
       int result = await _checkListDao.insert(checklist);
 
       if (result != 0) {
-        checklists.add(checklist);
+        _checklists.add(checklist);
       }
     } on DatabaseException catch (e) {
       setError(e.getResultCode() ?? 0);
@@ -88,7 +117,7 @@ abstract class CheckListControllerBase with Store {
       int result = await _checkListDao.deleteCheckList(checklistToDelete);
 
       if (result > 0) {
-        checklists
+        _checklists
             .removeWhere((checklist) => checklist.id == checklistToDelete.id);
       }
     } on DatabaseException catch (e) {
@@ -112,11 +141,11 @@ abstract class CheckListControllerBase with Store {
       int result = await _checkListDao.updateChecklist(checklistToUpdate);
 
       if (result > 0) {
-        int index = checklists.indexWhere(
+        int index = _checklists.indexWhere(
           (element) => element.id == checklistToUpdate.id,
         );
 
-        checklists[index] = checklistToUpdate;
+        _checklists[index] = checklistToUpdate;
       }
     } on DatabaseException catch (e) {
       setError(e.getResultCode() ?? 0);

@@ -31,9 +31,13 @@
     "categoryHint": "Select Category",
     "shopping": "Shopping",
     "house": "House",
+    "market": "Market",
     "work": "Work",
     "study": "Study",
     "others": "Others",
     "titleItem": "Title of Item",
-    "wasNotPossibleToUpdate": "Was not possible to create or update because already exists an item with this title"
+    "wasNotPossibleToUpdate": "Was not possible to create or update because already exists an item with this title",
+    "searchYourList": "Search your list",
+    "closePage": "Close",
+     "checklistFilter": "Checklist Filter"
 }
