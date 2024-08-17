@@ -5,6 +5,7 @@ import 'package:checklist/app/shared/logs/models/log_message.dart';
 
 import 'package:mobx/mobx.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 part 'calendar_controller.g.dart';
 
@@ -19,6 +20,9 @@ abstract class CalendarControllerBase with Store {
       required MessageLogger messageLogger})
       : _checklistItemDAO = checklistItemDAO,
         _messageLogger = messageLogger;
+
+  @observable
+  CalendarFormat calendarFormat = CalendarFormat.month;
 
   @observable
   DateTime selectedDate = DateTime.now();
@@ -45,6 +49,11 @@ abstract class CalendarControllerBase with Store {
   @action
   void setCodeErro(int error) {
     codeError = error;
+  }
+
+  @action
+  void setCalendarFormat(CalendarFormat calendarFormat) {
+    this.calendarFormat = calendarFormat;
   }
 
   @action

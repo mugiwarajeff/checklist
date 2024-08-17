@@ -9,6 +9,22 @@ part of 'calendar_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$CalendarController on CalendarControllerBase, Store {
+  late final _$calendarFormatAtom =
+      Atom(name: 'CalendarControllerBase.calendarFormat', context: context);
+
+  @override
+  CalendarFormat get calendarFormat {
+    _$calendarFormatAtom.reportRead();
+    return super.calendarFormat;
+  }
+
+  @override
+  set calendarFormat(CalendarFormat value) {
+    _$calendarFormatAtom.reportWrite(value, super.calendarFormat, () {
+      super.calendarFormat = value;
+    });
+  }
+
   late final _$selectedDateAtom =
       Atom(name: 'CalendarControllerBase.selectedDate', context: context);
 
@@ -118,8 +134,20 @@ mixin _$CalendarController on CalendarControllerBase, Store {
   }
 
   @override
+  void setCalendarFormat(CalendarFormat calendarFormat) {
+    final _$actionInfo = _$CalendarControllerBaseActionController.startAction(
+        name: 'CalendarControllerBase.setCalendarFormat');
+    try {
+      return super.setCalendarFormat(calendarFormat);
+    } finally {
+      _$CalendarControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
+calendarFormat: ${calendarFormat},
 selectedDate: ${selectedDate},
 isLoading: ${isLoading},
 codeError: ${codeError}

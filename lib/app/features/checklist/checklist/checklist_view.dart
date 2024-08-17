@@ -1,6 +1,7 @@
 import 'package:checklist/app/features/checklist/checklist/controllers/checklist_controller.dart';
+import 'package:checklist/app/features/checklist/checklist/enum/checklist_category.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
-import 'package:checklist/app/features/checklist/checklist/widgets/checklist_filter_dialog.dart';
+import 'package:checklist/app/features/checklist/checklist/utils/checklist_utils.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/checklist_form_dialog.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/checklist_card.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/painters/edit_area_painter.dart';
@@ -101,18 +102,36 @@ class _CheckListViewState extends State<CheckListView> {
                                   searchText.text = "";
                                 },
                                 icon: const Icon(Icons.close)),
-                            IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) =>
-                                          ChecklistFilterDialog(
-                                              checkListController:
-                                                  checkListController));
-                                },
-                                icon: const Icon(Icons.filter_alt))
                           ],
                         ),
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: SegmentedButton<ChecklistCategory?>(
+                            multiSelectionEnabled: false,
+                            emptySelectionAllowed: true,
+                            onSelectionChanged: (selections) {
+                              if (selections.isEmpty) {
+                                checkListController
+                                    .setChecklistCategoryFilter(null);
+                                return;
+                              }
+
+                              checkListController
+                                  .setChecklistCategoryFilter(selections.first);
+                            },
+                            segments: ChecklistCategory.values
+                                .map((category) => ButtonSegment(
+                                    enabled: true,
+                                    value: category,
+                                    label: Text(
+                                        ChecklistUtils.translateCategory(
+                                            category,
+                                            AppLocalizations.of(context)!))))
+                                .toList(),
+                            selected: {
+                              checkListController.checklistCategoryFilter
+                            }),
                       ),
                       Expanded(
                         flex: 2,

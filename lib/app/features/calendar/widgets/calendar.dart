@@ -33,6 +33,15 @@ class Calendar extends StatelessWidget {
         onDaySelected: (selectedDay, focusedDay) =>
             calendarController.setSelectedDate(selectedDay),
         locale: configurationsController.locale.toLanguageTag(),
+        availableCalendarFormats: const {
+          CalendarFormat.month: "Month",
+          CalendarFormat.twoWeeks: "Two Weeks",
+          CalendarFormat.week: "Week"
+        },
+        calendarFormat: calendarController.calendarFormat,
+        onFormatChanged: (format) {
+          calendarController.setCalendarFormat(format);
+        },
         focusedDay: calendarController.selectedDate,
         firstDay: DateTime.now().subtract(const Duration(days: 1000)),
         lastDay: DateTime(2030),

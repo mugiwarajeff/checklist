@@ -47,6 +47,7 @@ abstract class CheckListControllerBase with Store {
   @action
   void setChecklistCategoryFilter(ChecklistCategory? checklistCategory) {
     checklistCategoryFilter = checklistCategory;
+    loadCheckLists();
   }
 
   @action
