@@ -1,6 +1,7 @@
 import 'package:checklist/app/features/calendar/calendar_view.dart';
 import 'package:checklist/app/features/checklist/checklist/checklist_view.dart';
 import 'package:checklist/app/features/configurations/controllers/configurations_controller.dart';
+import 'package:checklist/app/features/home/widgets/menu_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -51,6 +52,7 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
       body: selectPage(),
+      drawer: const MenuDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
         items: [
