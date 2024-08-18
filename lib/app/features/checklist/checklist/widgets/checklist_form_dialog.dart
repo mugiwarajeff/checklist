@@ -1,5 +1,5 @@
+import 'package:checklist/app/features/category_management/controllers/category_management_controller.dart';
 import 'package:checklist/app/features/checklist/checklist/controllers/checklist_controller.dart';
-import 'package:checklist/app/features/checklist/checklist/enum/checklist_category.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/features/checklist/checklist/models/value_objects/checklist_title.dart';
 import 'package:checklist/app/features/checklist/checklist/utils/checklist_utils.dart';
@@ -13,15 +13,14 @@ class ChecklistFormDialog extends StatelessWidget {
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
   ChecklistFormDialog({super.key, this.checklist})
       : checkListCopy = checklist ??
-            CheckList(
-                id: 0,
-                title: CheckListTitle(value: ""),
-                category: ChecklistCategory.shopping);
+            CheckList(id: 0, title: CheckListTitle(value: ""), category: "");
 
   @override
   Widget build(BuildContext context) {
     final CheckListController checkListController =
         Provider.of<CheckListController>(context);
+    final CategoryManagementController categoryManagementController =
+        Provider.of<CategoryManagementController>(context);
     final double screenHeight = MediaQuery.of(context).size.height;
     final Color cancelButtonColor = Theme.of(context).colorScheme.tertiary;
     final Color cancelButtonSecondColor =
@@ -37,6 +36,7 @@ class ChecklistFormDialog extends StatelessWidget {
     final String categoryHint = AppLocalizations.of(context)!.categoryHint;
 
     const double contentPadding = 16;
+
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(contentPadding),
@@ -73,7 +73,7 @@ class ChecklistFormDialog extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      DropdownButtonFormField<ChecklistCategory>(
+                      DropdownButtonFormField<String>(
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.category),
                           border: const OutlineInputBorder(),
@@ -81,11 +81,12 @@ class ChecklistFormDialog extends StatelessWidget {
                           hintText: categoryHint,
                         ),
                         value: checkListCopy.category,
-                        items: ChecklistCategory.values
+                        items: categoryManagementController.categories
                             .map((category) => DropdownMenuItem(
-                                  value: category,
+                                  value: category.name,
                                   child: Text(ChecklistUtils.translateCategory(
-                                      category, AppLocalizations.of(context)!)),
+                                      category.name,
+                                      AppLocalizations.of(context)!)),
                                 ))
                             .toList(),
                         onChanged: (value) {

@@ -1,3 +1,4 @@
+import 'package:checklist/app/features/category_management/dao/category_dao_sqflite.dart';
 import 'package:checklist/app/features/configurations/models/configurations.dart';
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao_sqflite.dart';
 import 'package:checklist/app/features/checklist/checklist_item/dao/checklist_item_dao_sqflite.dart';
@@ -34,6 +35,8 @@ class DatabaseHelper {
         db.execute(ConfigurationsDaoSqflite.createTableSql);
         db.insert(
             ConfigurationsDaoSqflite.tableName, configurationsObject.toJson());
+        db.execute(CategoryDaoSqflite.createTableSql);
+        db.execute(CategoryDaoSqflite.insertDefaultCategoriesSql);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         await deleteDatabase(databaseFullPath);

@@ -1,5 +1,6 @@
+import 'package:checklist/app/features/category_management/controllers/category_management_controller.dart';
 import 'package:checklist/app/features/checklist/checklist/controllers/checklist_controller.dart';
-import 'package:checklist/app/features/checklist/checklist/enum/checklist_category.dart';
+
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/features/checklist/checklist/utils/checklist_utils.dart';
 import 'package:checklist/app/features/checklist/checklist/widgets/checklist_form_dialog.dart';
@@ -25,6 +26,8 @@ class _CheckListViewState extends State<CheckListView> {
 
   @override
   Widget build(BuildContext context) {
+    final CategoryManagementController categoryManagementController =
+        Provider.of<CategoryManagementController>(context);
     final String searchHint = AppLocalizations.of(context)!.searchYourList;
     final String confirmButton = AppLocalizations.of(context)!.confirm;
     final String cancelButton = AppLocalizations.of(context)!.cancel;
@@ -34,6 +37,7 @@ class _CheckListViewState extends State<CheckListView> {
         Provider.of<CheckListController>(context);
 
     checkListController.loadCheckLists();
+    categoryManagementController.loadCategories();
     const double checkListPadding = 0;
     const double crossSpacin = 10;
 
@@ -105,34 +109,41 @@ class _CheckListViewState extends State<CheckListView> {
                           ],
                         ),
                       ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: SegmentedButton<ChecklistCategory?>(
-                            multiSelectionEnabled: false,
-                            emptySelectionAllowed: true,
-                            onSelectionChanged: (selections) {
-                              if (selections.isEmpty) {
-                                checkListController
-                                    .setChecklistCategoryFilter(null);
-                                return;
-                              }
+                      Observer(builder: (context) {
+                        if (categoryManagementController.isLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SegmentedButton<String?>(
+                              multiSelectionEnabled: false,
+                              emptySelectionAllowed: true,
+                              onSelectionChanged: (selections) {
+                                if (selections.isEmpty) {
+                                  checkListController
+                                      .setChecklistCategoryFilter(null);
+                                  return;
+                                }
 
-                              checkListController
-                                  .setChecklistCategoryFilter(selections.first);
-                            },
-                            segments: ChecklistCategory.values
-                                .map((category) => ButtonSegment(
-                                    enabled: true,
-                                    value: category,
-                                    label: Text(
-                                        ChecklistUtils.translateCategory(
-                                            category,
-                                            AppLocalizations.of(context)!))))
-                                .toList(),
-                            selected: {
-                              checkListController.checklistCategoryFilter
-                            }),
-                      ),
+                                checkListController.setChecklistCategoryFilter(
+                                    selections.first);
+                              },
+                              segments: categoryManagementController.categories
+                                  .map((category) => ButtonSegment(
+                                      enabled: true,
+                                      value: category.name,
+                                      label: Text(
+                                          ChecklistUtils.translateCategory(
+                                              category.name,
+                                              AppLocalizations.of(context)!))))
+                                  .toList(),
+                              selected: {
+                                checkListController.checklistCategoryFilter
+                              }),
+                        );
+                      }),
                       Expanded(
                         flex: 2,
                         child: Observer(

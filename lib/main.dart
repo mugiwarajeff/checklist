@@ -1,5 +1,8 @@
 import 'package:checklist/app/app.dart';
 import 'package:checklist/app/features/calendar/controllers/calendar_controller.dart';
+import 'package:checklist/app/features/category_management/controllers/category_management_controller.dart';
+import 'package:checklist/app/features/category_management/dao/category_dao_sqflite.dart';
+import 'package:checklist/app/features/category_management/dao/interface/category_dao.dart';
 import 'package:checklist/app/features/checklist/checklist/controllers/checklist_controller.dart';
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao.dart';
 import 'package:checklist/app/features/checklist/checklist_item/controllers/checklist_item_controller.dart';
@@ -58,6 +61,14 @@ void main() async {
       update: (context, checklistItemDAO, messageLogger, previous) =>
           CalendarController(
               checklistItemDAO: checklistItemDAO, messageLogger: messageLogger),
+    ),
+    Provider<CategoryDao>(
+      create: (context) => CategoryDaoSqflite(),
+    ),
+    ProxyProvider2<CategoryDao, MessageLogger, CategoryManagementController>(
+      update: (context, categoryDao, messageLogger, previous) =>
+          CategoryManagementController(
+              categoryDao: categoryDao, messageLogger: messageLogger),
     )
   ], child: App()));
 }

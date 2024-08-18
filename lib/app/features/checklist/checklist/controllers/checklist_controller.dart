@@ -1,5 +1,5 @@
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao.dart';
-import 'package:checklist/app/features/checklist/checklist/enum/checklist_category.dart';
+
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
 import 'package:checklist/app/shared/logs/models/log_message.dart';
@@ -30,7 +30,7 @@ abstract class CheckListControllerBase with Store {
   String searchText = "";
 
   @observable
-  ChecklistCategory? checklistCategoryFilter;
+  String? checklistCategoryFilter;
 
   @observable
   bool isLoading = false;
@@ -45,7 +45,7 @@ abstract class CheckListControllerBase with Store {
         _messageLogger = messagelogger;
 
   @action
-  void setChecklistCategoryFilter(ChecklistCategory? checklistCategory) {
+  void setChecklistCategoryFilter(String? checklistCategory) {
     checklistCategoryFilter = checklistCategory;
     loadCheckLists();
   }

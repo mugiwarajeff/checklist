@@ -1,4 +1,3 @@
-import 'package:checklist/app/features/checklist/checklist/enum/checklist_category.dart';
 import 'package:checklist/app/features/checklist/checklist/models/value_objects/checklist_title.dart';
 import 'package:equatable/equatable.dart';
 
@@ -6,22 +5,21 @@ import 'package:equatable/equatable.dart';
 class CheckList extends Equatable {
   final int id;
   CheckListTitle title;
-  ChecklistCategory category;
+  String category;
 
   CheckList({required this.id, required this.title, required this.category});
 
   CheckList.empty()
       : id = 0,
         title = CheckListTitle(value: ""),
-        category = ChecklistCategory.others;
+        category = "";
 
   CheckList.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         title = CheckListTitle(value: json["title"]),
-        category = ChecklistCategory.values.byName(json["category"]);
+        category = json["category"];
 
-  Map<String, dynamic> toJson() =>
-      {"title": title.value, "category": category.name};
+  Map<String, dynamic> toJson() => {"title": title.value, "category": category};
 
   @override
   List<Object?> get props => [id, title];

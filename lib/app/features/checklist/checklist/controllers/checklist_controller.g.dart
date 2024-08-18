@@ -30,13 +30,13 @@ mixin _$CheckListController on CheckListControllerBase, Store {
       context: context);
 
   @override
-  ChecklistCategory? get checklistCategoryFilter {
+  String? get checklistCategoryFilter {
     _$checklistCategoryFilterAtom.reportRead();
     return super.checklistCategoryFilter;
   }
 
   @override
-  set checklistCategoryFilter(ChecklistCategory? value) {
+  set checklistCategoryFilter(String? value) {
     _$checklistCategoryFilterAtom
         .reportWrite(value, super.checklistCategoryFilter, () {
       super.checklistCategoryFilter = value;
@@ -113,7 +113,7 @@ mixin _$CheckListController on CheckListControllerBase, Store {
       ActionController(name: 'CheckListControllerBase', context: context);
 
   @override
-  void setChecklistCategoryFilter(ChecklistCategory? checklistCategory) {
+  void setChecklistCategoryFilter(String? checklistCategory) {
     final _$actionInfo = _$CheckListControllerBaseActionController.startAction(
         name: 'CheckListControllerBase.setChecklistCategoryFilter');
     try {

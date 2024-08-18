@@ -1,6 +1,5 @@
 import 'package:checklist/app/features/checklist/checklist/controllers/checklist_controller.dart';
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao.dart';
-import 'package:checklist/app/features/checklist/checklist/enum/checklist_category.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/features/checklist/checklist/models/value_objects/checklist_title.dart';
 import 'package:checklist/app/shared/logs/interfaces/message_logger.dart';
@@ -19,13 +18,9 @@ void main() {
 
   List<CheckList> checklistsTest = [
     CheckList(
-        id: 1,
-        title: CheckListTitle(value: "compras"),
-        category: ChecklistCategory.others),
+        id: 1, title: CheckListTitle(value: "compras"), category: "others"),
     CheckList(
-        id: 2,
-        title: CheckListTitle(value: "compras 2024"),
-        category: ChecklistCategory.others)
+        id: 2, title: CheckListTitle(value: "compras 2024"), category: "others")
   ];
 
   setUp(() {
@@ -60,7 +55,7 @@ void main() {
       CheckList newChecklist = CheckList(
           id: 3,
           title: CheckListTitle(value: "Compras 2025"),
-          category: ChecklistCategory.others);
+          category: "others");
       when(checklistDAO.insert(newChecklist)).thenAnswer((_) async => 1);
 
       await checkListController.addCheckList(newChecklist);
@@ -72,7 +67,7 @@ void main() {
       CheckList newChecklist = CheckList(
           id: 3,
           title: CheckListTitle(value: "Compras 2025"),
-          category: ChecklistCategory.others);
+          category: "others");
       when(checklistDAO.insert(newChecklist)).thenThrow(DatabaseException);
 
       expect(checkListController.addCheckList(newChecklist),
@@ -83,9 +78,7 @@ void main() {
   group("Test remove checklist methods", () {
     test("Should remove a checklist", () async {
       CheckList checkList = CheckList(
-          id: 1,
-          title: CheckListTitle(value: "compras"),
-          category: ChecklistCategory.others);
+          id: 1, title: CheckListTitle(value: "compras"), category: "others");
 
       when(checklistDAO.deleteCheckList(checkList)).thenAnswer((_) async => 1);
 

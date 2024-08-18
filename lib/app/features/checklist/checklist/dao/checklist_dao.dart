@@ -1,8 +1,7 @@
-import 'package:checklist/app/features/checklist/checklist/enum/checklist_category.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 
 abstract class ChecklistDAO {
-  Future<List<CheckList>> getAll(ChecklistCategory? checklistCategoryFilter);
+  Future<List<CheckList>> getAll(String? checklistCategoryFilter);
 
   Future<int> insert(CheckList checkList);
 

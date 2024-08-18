@@ -1,9 +1,8 @@
-import 'package:checklist/app/features/checklist/checklist/enum/checklist_category.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChecklistUtils {
   static String translateCategory(
-      ChecklistCategory category, AppLocalizations appLocalizations) {
+      String category, AppLocalizations appLocalizations) {
     final String shoppingText = appLocalizations.shopping;
     final String houseText = appLocalizations.house;
 
@@ -13,18 +12,20 @@ class ChecklistUtils {
     final String marketText = appLocalizations.market;
 
     switch (category) {
-      case ChecklistCategory.shopping:
+      case "shopping":
         return shoppingText;
-      case ChecklistCategory.house:
+      case "house":
         return houseText;
-      case ChecklistCategory.work:
+      case "work":
         return workText;
-      case ChecklistCategory.study:
+      case "study":
         return studyText;
-      case ChecklistCategory.others:
+      case "others":
         return othersText;
-      case ChecklistCategory.market:
+      case "market":
         return marketText;
+      default:
+        return category;
     }
   }
 }

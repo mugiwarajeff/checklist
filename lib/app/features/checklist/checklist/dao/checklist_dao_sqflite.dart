@@ -1,5 +1,4 @@
 import 'package:checklist/app/features/checklist/checklist/dao/checklist_dao.dart';
-import 'package:checklist/app/features/checklist/checklist/enum/checklist_category.dart';
 import 'package:checklist/app/features/checklist/checklist/models/checklist.dart';
 import 'package:checklist/app/shared/database/database_helper.dart';
 import 'package:sqflite/sqflite.dart';
@@ -26,13 +25,12 @@ class CheckListDaoSqFlite implements ChecklistDAO {
   }
 
   @override
-  Future<List<CheckList>> getAll(
-      ChecklistCategory? checklistCategoryFilter) async {
+  Future<List<CheckList>> getAll(String? checklistCategoryFilter) async {
     Database database = await DatabaseHelper.instance;
 
     String? whereClause = checklistCategoryFilter == null
         ? null
-        : "$_category = '${checklistCategoryFilter.name}'";
+        : "$_category = '$checklistCategoryFilter'";
 
     List<Map<String, Object?>> queryResult =
         await database.query(_tableName, where: whereClause);

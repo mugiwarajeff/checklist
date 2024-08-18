@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:checklist/app/features/category_management/models/category.dart';
 
 abstract class CategoryDao {
   Future<int> insertCategory(Category category);
