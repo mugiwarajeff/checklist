@@ -44,6 +44,8 @@ abstract class CategoryManagementControllerBase with Store {
 
       categories.clear();
       categories.addAll(categoriesFromDB);
+
+      print(categoriesFromDB.length);
     } on DatabaseException catch (error) {
       setCodeError(error.getResultCode() ?? 0);
 

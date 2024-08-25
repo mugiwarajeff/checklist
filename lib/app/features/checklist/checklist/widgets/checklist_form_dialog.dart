@@ -13,7 +13,8 @@ class ChecklistFormDialog extends StatelessWidget {
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
   ChecklistFormDialog({super.key, this.checklist})
       : checkListCopy = checklist ??
-            CheckList(id: 0, title: CheckListTitle(value: ""), category: "");
+            CheckList(
+                id: 0, title: CheckListTitle(value: ""), category: "others");
 
   @override
   Widget build(BuildContext context) {

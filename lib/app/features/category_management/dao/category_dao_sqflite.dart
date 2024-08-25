@@ -14,17 +14,18 @@ class CategoryDaoSqflite implements CategoryDao {
       '$_name TEXT PRIMARY KEY,'
       '$_description TEXT,'
       '$_visible INTEGER,'
-      '$_color INTEGER,'
+      '$_color INTEGER'
       ')';
 
   static const String insertDefaultCategoriesSql = """
   INSERT INTO $_tableName($_name, $_description, $_visible, $_color)
-  VALUES ('shopping', '', 1, 4280391411),
-  VALUES ('market', '', 1, 4280391411),
-  VALUES ('house', '', 1, 4280391411),
-  VALUES ('work', '', 1, 4280391411),
-  VALUES ('study', '', 1, 4280391411),
-   VALUES ('others', '', 1, 4280391411)
+  VALUES 
+    ('shopping', '', 1, 4280391411),
+    ('market', '', 1, 4280391411),
+    ('house', '', 1, 4280391411),
+    ('work', '', 1, 4280391411),
+    ('study', '', 1, 4280391411),
+    ('others', '', 1, 4280391411)
 """;
   @override
   Future<List<Category>> getAll() async {

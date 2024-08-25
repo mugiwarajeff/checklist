@@ -33,7 +33,7 @@ class _CheckListViewState extends State<CheckListView> {
     final String cancelButton = AppLocalizations.of(context)!.cancel;
     final String confirmationText =
         AppLocalizations.of(context)!.wantToDeleteChecklist;
-    CheckListController checkListController =
+    final CheckListController checkListController =
         Provider.of<CheckListController>(context);
 
     checkListController.loadCheckLists();
@@ -115,6 +115,11 @@ class _CheckListViewState extends State<CheckListView> {
                             child: CircularProgressIndicator(),
                           );
                         }
+
+                        if (categoryManagementController.categories.isEmpty) {
+                          return Container();
+                        }
+
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: SegmentedButton<String?>(

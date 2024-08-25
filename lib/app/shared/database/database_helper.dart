@@ -8,8 +8,8 @@ import "package:path/path.dart";
 
 class DatabaseHelper {
   static Future<String> get _databasePath async => await getDatabasesPath();
-  static const String _databaseName = "checklist_7";
-  static const int _databaseVersion = 4;
+  static const String _databaseName = "checklist";
+  static const int _databaseVersion = 6;
   static Database? _instance;
 
   DatabaseHelper._();
