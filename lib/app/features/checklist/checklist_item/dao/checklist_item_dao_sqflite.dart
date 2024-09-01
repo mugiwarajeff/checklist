@@ -13,16 +13,19 @@ class CheckListItemDaoSqflite implements ChecklistItemDAO {
   static const String _checked = "checked";
   static const String _dueDate = "due_date";
   static const String _createDate = "create_date";
+  static const String _referenceLink = "reference_link";
 
-  static const String createTableSql = 'CREATE TABLE $_tableName('
-      '$_checklistId INTEGER,'
-      '$_checklistItemId INTEGER PRIMARY KEY,'
-      '$_title TEXT UNIQUE,'
-      '$_description TEXT,'
-      '$_checked INTEGER,'
-      '$_dueDate INTEGER,'
-      '$_createDate INTEGER'
-      ')';
+  static const String createTableSql = """CREATE TABLE $_tableName(
+      $_checklistId INTEGER,
+      $_checklistItemId INTEGER PRIMARY KEY,
+      $_title TEXT UNIQUE,
+      $_description TEXT,
+      $_checked INTEGER,
+      $_dueDate INTEGER,
+      $_createDate INTEGER,
+      $_referenceLink TEXT
+      )
+      """;
 
   @override
   Future<int> insertItem(CheckListItem checkListItem) async {
@@ -44,7 +47,9 @@ class CheckListItemDaoSqflite implements ChecklistItemDAO {
         : "$_createDate ASC";
 
     List<Map<String, Object?>> queryResult = await database.query(_tableName,
-        where: "$_checklistId = '$checklistId'", orderBy: orderByClause);
+        where: "$_checklistId = ?",
+        whereArgs: [checklistId],
+        orderBy: orderByClause);
 
     List<CheckListItem> checklistItens =
         queryResult.map((mapItem) => CheckListItem.fromJson(mapItem)).toList();

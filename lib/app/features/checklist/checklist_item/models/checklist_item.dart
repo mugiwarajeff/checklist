@@ -1,4 +1,5 @@
 import 'package:checklist/app/features/checklist/checklist_item/models/value_objects/checklist_title.dart';
+import 'package:checklist/app/features/checklist/checklist_item/models/value_objects/reference_link.dart';
 
 class CheckListItem {
   int checklistId;
@@ -8,6 +9,7 @@ class CheckListItem {
   bool checked;
   DateTime? dueDate;
   DateTime createDate;
+  ReferenceLink referenceLink;
 
   CheckListItem(
       {required this.checklistItemId,
@@ -16,7 +18,8 @@ class CheckListItem {
       required this.checked,
       required this.checklistId,
       required this.dueDate,
-      required this.createDate});
+      required this.createDate,
+      required this.referenceLink});
 
   CheckListItem.empty()
       : checklistItemId = 0,
@@ -25,7 +28,8 @@ class CheckListItem {
         description = "",
         title = ChecklistItemTitle(value: ""),
         createDate = DateTime.now(),
-        dueDate = null;
+        dueDate = null,
+        referenceLink = ReferenceLink(value: "");
 
   CheckListItem copy() {
     return CheckListItem(
@@ -35,7 +39,8 @@ class CheckListItem {
         createDate: createDate,
         description: description,
         dueDate: dueDate,
-        title: title);
+        title: title,
+        referenceLink: referenceLink);
   }
 
   CheckListItem.fromJson(Map<String, dynamic> json)
@@ -47,7 +52,10 @@ class CheckListItem {
         dueDate = json["due_date"] == null
             ? json["due_date"]
             : DateTime.fromMillisecondsSinceEpoch(json["due_date"]),
-        createDate = DateTime.fromMillisecondsSinceEpoch(json["create_date"]);
+        createDate = DateTime.fromMillisecondsSinceEpoch(
+          json["create_date"],
+        ),
+        referenceLink = ReferenceLink(value: json["reference_link"]);
 
   Map<String, dynamic> toJson() => {
         "checked": checked == true ? 1 : 0,
@@ -55,6 +63,7 @@ class CheckListItem {
         "description": description,
         "title": title.value,
         "due_date": dueDate?.millisecondsSinceEpoch,
-        "create_date": createDate.millisecondsSinceEpoch
+        "create_date": createDate.millisecondsSinceEpoch,
+        "reference_link": referenceLink.value
       };
 }

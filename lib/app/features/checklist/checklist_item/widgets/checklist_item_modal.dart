@@ -1,5 +1,6 @@
 import 'package:checklist/app/features/checklist/checklist_item/models/checklist_item.dart';
 import 'package:checklist/app/features/checklist/checklist_item/models/value_objects/checklist_title.dart';
+import 'package:checklist/app/features/checklist/checklist_item/models/value_objects/reference_link.dart';
 
 import 'package:checklist/app/shared/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,10 @@ class _ChecklistItemModalState extends State<ChecklistItemModal> {
     final String descriptionText = AppLocalizations.of(context)!.description;
     final String insertDescription =
         AppLocalizations.of(context)!.insertDescription;
+    final String referenceLinkText =
+        AppLocalizations.of(context)!.referenceLink;
+    final String referenceLinkHint =
+        AppLocalizations.of(context)!.addReferenceLinkToItem;
 
     final String dueDateText = AppLocalizations.of(context)!.dueDate;
     final String dueDateDescription =
@@ -134,7 +139,7 @@ class _ChecklistItemModalState extends State<ChecklistItemModal> {
                                   label: Text(dueDateText),
                                   hintText: dueDateDescription)),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Expanded(
@@ -166,7 +171,22 @@ class _ChecklistItemModalState extends State<ChecklistItemModal> {
                         decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             label: Text(descriptionText),
-                            hintText: insertDescription))
+                            hintText: insertDescription)),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                        initialValue: checkListItemCopy.referenceLink.value,
+                        maxLines: 1,
+                        onChanged: (value) => checkListItemCopy.referenceLink =
+                            ReferenceLink(value: value),
+                        validator: (value) => checkListItemCopy.referenceLink
+                            .validate(value, appLocalizations),
+                        decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.link),
+                            border: const OutlineInputBorder(),
+                            label: Text(referenceLinkText),
+                            hintText: referenceLinkHint))
                   ],
                 )),
           ),

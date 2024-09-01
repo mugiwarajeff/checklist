@@ -42,5 +42,7 @@
     "checklistFilter": "Checklist Filter",
     "lists": "Lists",
     "calendar": "Calendar",
-    "categoryManagement": "Category Managment"
+    "categoryManagement": "Category Managment",
+    "referenceLink": "Reference Link",
+    "addReferenceLinkToItem": "Add a Reference Link to this Item"
 }

@@ -79,6 +79,7 @@ abstract class ChecklistItemControllerBase with Store {
 
     try {
       checklistItems.clear();
+
       List<CheckListItem> itemsFromDb =
           await _checklistItemDAO.getAll(checkListId, checklistOrder);
 
